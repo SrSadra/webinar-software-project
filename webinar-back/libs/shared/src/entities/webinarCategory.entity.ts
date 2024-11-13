@@ -11,6 +11,9 @@ export class WebinarCategory{
     @Column()
     subCategory: string[];
 
+    @Column({default: true})
+    isActive: boolean;
+
     @ManyToMany(() => webinarEntity, (webinar) => webinar.category)
     webinar: webinarEntity[];
 }

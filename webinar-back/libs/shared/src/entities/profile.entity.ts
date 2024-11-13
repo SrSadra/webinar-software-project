@@ -13,7 +13,7 @@ export class ProfileEntity {
     @JoinColumn({name: "username"})
     user: userEntity;
 
-    @Column()
+    @Column({nullable: true})
     graduation: GraduationStatus
 
     //fieldStudy ??

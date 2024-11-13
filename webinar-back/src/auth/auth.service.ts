@@ -1,5 +1,6 @@
 import { loginUserDto } from '@app/shared/dtos/loginUser.dto';
 import { registerUserDto } from '@app/shared/dtos/registerUser.dto';
+import { profileRepository } from '@app/shared/interfaces/repos/profile.repository';
 import { userRepository } from '@app/shared/interfaces/repos/user.repository';
 import { BadRequestException, HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -7,7 +8,7 @@ import * as bcrypt from "bcrypt"
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly jwtSer: JwtService, private readonly userRep : userRepository){}
+    constructor(private readonly jwtSer: JwtService, private readonly userRep : userRepository, private readonly profileRep : profileRepository){}
 
     async login(user : Readonly<loginUserDto>){
         try{
@@ -45,7 +46,9 @@ export class AuthService {
               ...createUser,
               password : hashed
             });
-    
+            // const profile = this.profileRep.save({
+            //   graduation : 
+            // })
             delete user.password; //?? in react
             return user; //? in react
           }

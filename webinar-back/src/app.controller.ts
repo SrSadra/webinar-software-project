@@ -5,8 +5,9 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+
+  @Get('*') // will match any route that doesnt match other
+  handleNotFound() {
+    return '404 Not Found';
   }
 }

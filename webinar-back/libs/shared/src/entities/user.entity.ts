@@ -25,7 +25,7 @@ export class userEntity {
     nationalCode?: number;
 
     @Column({unique: true})
-    phoneNumber: string; // ??
+    phoneNumber: string; // ?? // with prefix
 
     @Column({nullable: true})
     whatsAppNumber: string; //??
