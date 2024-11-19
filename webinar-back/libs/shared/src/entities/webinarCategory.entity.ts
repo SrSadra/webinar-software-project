@@ -1,4 +1,5 @@
-import { Column, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { SubCategoryEntity } from "./subCategory.entity";
 import { webinarEntity } from "./webinar.entity";
 
 export class WebinarCategory{
@@ -8,12 +9,12 @@ export class WebinarCategory{
     @Column({unique: true})
     title: string;
 
-    @Column()
-    subCategory: string[];
+    @OneToMany(() => SubCategoryEntity, (subcategory) => subcategory.category)
+    subCategory: SubCategoryEntity[];
 
     @Column({default: true})
     isActive: boolean;
 
-    @ManyToMany(() => webinarEntity, (webinar) => webinar.category)
+    @OneToMany(() => webinarEntity, (webinar) => webinar.category)
     webinar: webinarEntity[];
 }

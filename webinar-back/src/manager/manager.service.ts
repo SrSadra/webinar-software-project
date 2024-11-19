@@ -36,15 +36,4 @@ export class ManagerService {
         return await this.categoryRep.categoryActivate(categoryTitle, false);
     }
 
-    async searchCategory(title?: string, isActive? : boolean){
-        if (title){
-            return await this.categoryRep.findCategoryByTitle(title, isActive);
-        }
-        else if (isActive){
-            return await this.categoryRep.findCategoryByActivate(isActive);
-        }
-        else{
-            throw new NotFoundException("No webinar has found!");
-        }
-    }
 }

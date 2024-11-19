@@ -22,7 +22,10 @@ import { WebinarModule } from './webinar/webinar.module';
         autoLoadEntities : true
       })
     }),
-    WebinarModule
+    WebinarModule,
+    ConfigModule.forRoot({
+      isGlobal : true,
+    })
   ],
   controllers: [AppController, UserController],
   providers: [AppService, UserService],

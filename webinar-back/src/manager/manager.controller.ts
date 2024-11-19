@@ -20,10 +20,6 @@ export class ManagerController {
         
     }
 
-    @Get("categories")
-    async searchCategory(@Query("title") title? : string,@Query("isActive") isActive?: boolean){
-        return await this.managerSer.searchCategory(title,isActive);
-    }
 
 
     @Post("promote/:email")

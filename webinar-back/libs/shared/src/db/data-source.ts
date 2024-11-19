@@ -3,6 +3,7 @@ import { CertificateEntity } from "../entities/certificate.entity";
 import { EpisodeEntity } from "../entities/episode.entity";
 import { ManagerEntity } from "../entities/manager.entity";
 import { ProfileEntity } from "../entities/profile.entity";
+import { SubCategoryEntity } from "../entities/subCategory.entity";
 import { TransactionEntity } from "../entities/transaction.entity";
 import { userEntity } from "../entities/user.entity";
 import { webinarEntity } from "../entities/webinar.entity";
@@ -14,7 +15,7 @@ export const dataSourceOption : DataSourceOptions = {
     url : process.env.DATABASE_URL,
     // host : process.env.
     // url : "jdbc:mysql://root:3306/nestjs",
-    entities : [userEntity,CertificateEntity,EpisodeEntity,ManagerEntity,ProfileEntity,TransactionEntity,webinarEntity,WebinarCategory,webinarFilesEntity],
+    entities : [userEntity,CertificateEntity,EpisodeEntity,ManagerEntity,ProfileEntity,TransactionEntity,webinarEntity,WebinarCategory,webinarFilesEntity,SubCategoryEntity],
     migrations : ['dist/apps/auth/db/migrations/*.js']
 }
 

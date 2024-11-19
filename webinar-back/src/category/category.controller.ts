@@ -4,7 +4,7 @@ import { updateCategoryDto } from '@app/shared/dtos/updateCategory.dto';
 import { Roles } from '@app/shared/enums/roles.enum';
 import { jwtGuard } from '@app/shared/guards/jwt.guard';
 import { RolesGuard } from '@app/shared/guards/role.guard';
-import { Body, Controller, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { CategoryService } from './category.service';
 
 @UseGuards(jwtGuard, RolesGuard)
@@ -21,5 +21,10 @@ export class CategoryController {
     @Post("create-category")
     async createCategory(@Body() newCategory: newCategoryDto){
         return await this.categorySer.createCategory(newCategory);
+    }
+
+    @Get("categories")
+    async searchCategory(@Query("title") title? : string,@Query("isActive") isActive?: boolean){
+        return await this.categorySer.searchCategory(title,isActive);
     }
 }
