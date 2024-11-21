@@ -1,5 +1,5 @@
 import { TransactionEntity } from './transaction.entity';
-import { Column, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { webinarStatus } from "../enums/webinarStatus.enum";
 import { EpisodeEntity } from "./episode.entity";
 import { ManagerEntity } from "./manager.entity";
@@ -9,6 +9,7 @@ import { webinarFilesEntity } from "./webinarFiles.entity";
 import { WebinarCategory } from './webinarCategory.entity';
 import { SubCategoryEntity } from './subCategory.entity';
 
+@Entity("webinars")
 export class webinarEntity{
     @PrimaryGeneratedColumn()
     id: number;
@@ -20,7 +21,7 @@ export class webinarEntity{
     englishTitle: string;
 
     @Column({default: webinarStatus.IN_PROGRESS})
-    status: webinarStatus;
+    status: number;
 
     @Column()
     description: string;

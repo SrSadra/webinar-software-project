@@ -1,5 +1,9 @@
 import { loginUserDto } from '@app/shared/dtos/loginUser.dto';
 import { registerUserDto } from '@app/shared/dtos/registerUser.dto';
+import { ManagerEntity } from '@app/shared/entities/manager.entity';
+import { userEntity } from '@app/shared/entities/user.entity';
+import { Roles } from '@app/shared/enums/roles.enum';
+import { managerRepository } from '@app/shared/interfaces/repos/manager.repository';
 import { profileRepository } from '@app/shared/interfaces/repos/profile.repository';
 import { userRepository } from '@app/shared/interfaces/repos/user.repository';
 import { BadRequestException, HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
@@ -8,15 +12,21 @@ import * as bcrypt from "bcrypt"
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly jwtSer: JwtService, private readonly userRep : userRepository, private readonly profileRep : profileRepository){}
+    constructor(private readonly jwtSer: JwtService, private readonly userRep : userRepository, private readonly profileRep : profileRepository, private readonly managerRep : managerRepository){}
 
     async login(user : Readonly<loginUserDto>){
         try{
           const {email, password } = user;
-          const foundedUser = await this.findUserByEmail(email);
+
+          let foundedUser: ManagerEntity| userEntity = await this.managerRep.findByCondition({where : {email}});
+          console.log(foundedUser);
+          if (!foundedUser){
+            foundedUser = await this.findUserByEmail(email);
+          }
           if (!foundedUser){
             throw new UnauthorizedException();
           }
+          console.log(foundedUser);
           const validate = this.validatePassword(password,foundedUser.password);
           if (!validate){
             throw new UnauthorizedException();
@@ -26,8 +36,8 @@ export class AuthService {
           const token = this.jwtSer.sign({user : foundedUser});
     
           return token;
-        }catch{
-          throw new UnauthorizedException();
+        }catch (err){
+          console.log(err);
         }
       }
 
@@ -39,13 +49,27 @@ export class AuthService {
         try{
           const {email , password } = createUser;
           console.log(email,password);
-          const user = await this.findUserByEmail(email);
+          let user = await this.findUserByEmail(email);
+          let manager: ManagerEntity;
           if (!user){
             const hashed = await this.hashPassword(password);
-            const user = await this.userRep.save({
-              ...createUser,
-              password : hashed
-            });
+
+            if(createUser.username.endsWith("_admin")){//tmp
+              manager = await this.managerRep.save({
+                ...createUser,
+              });
+              delete manager.password;
+              return manager;
+            }else{
+                user = await this.userRep.save({
+                ...createUser,
+                password : hashed,
+              });
+            }
+
+            // if (createUser.username === 'sadra2_admin'){
+            //   user.role = Roles.MANAGER;
+            // }
             // const profile = this.profileRep.save({
             //   graduation : 
             // })
@@ -55,8 +79,9 @@ export class AuthService {
           else {
             throw new HttpException('Email is already in use', HttpStatus.CONFLICT);
           }
-        }catch{
-          throw new HttpException('Email is already in use', HttpStatus.CONFLICT);
+        }catch (err){
+          console.log(err);
+          throw new HttpException(err, HttpStatus.BAD_REQUEST);
         }
     }
     

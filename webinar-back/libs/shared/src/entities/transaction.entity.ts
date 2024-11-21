@@ -1,7 +1,8 @@
 import { ProfileEntity } from './profile.entity';
 import { webinarEntity } from './webinar.entity';
-import { Column, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
+@Entity("transaction")
 export class TransactionEntity {
     @PrimaryGeneratedColumn()
     id: number;

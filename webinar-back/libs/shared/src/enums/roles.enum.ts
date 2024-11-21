@@ -3,3 +3,8 @@ export enum Roles {
     DOCTOR = "doctor",
     MANAGER = "manager"
 }
+
+export enum UserRoles {
+    USER = "user",
+    DOCTOR = "doctor"
+}

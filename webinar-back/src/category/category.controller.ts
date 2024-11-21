@@ -2,12 +2,12 @@ import { Role } from '@app/shared/decorators/roles.decorator';
 import { newCategoryDto } from '@app/shared/dtos/newCategory.dto';
 import { updateCategoryDto } from '@app/shared/dtos/updateCategory.dto';
 import { Roles } from '@app/shared/enums/roles.enum';
-import { jwtGuard } from '@app/shared/guards/jwt.guard';
 import { RolesGuard } from '@app/shared/guards/role.guard';
 import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { CategoryService } from './category.service';
 
-@UseGuards(jwtGuard, RolesGuard)
+@UseGuards(AuthGuard("jwt"), RolesGuard)
 @Role(Roles.MANAGER)
 @Controller('category')
 export class CategoryController {

@@ -1,7 +1,8 @@
-import { Column, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { webinarEntity } from "./webinar.entity";
 import { webinarFilesEntity } from "./webinarFiles.entity";
 
+@Entity("episodes")
 export class EpisodeEntity {
     @PrimaryGeneratedColumn()
     id: number;

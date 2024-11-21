@@ -8,26 +8,37 @@ import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
 import { CategoryModule } from './category/category.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { dataSourceOption } from '@app/shared/db/data-source';
 import { WebinarModule } from './webinar/webinar.module';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
     AuthModule, ManagerModule, UserModule, CategoryModule,
+    ConfigModule.forRoot({
+      isGlobal : true,
+    }),
+    // JwtModule.registerAsync({
+    //   imports : [ConfigModule],
+    //   useFactory: (configSer : ConfigService) => ({
+    //     global: true,
+    //     secret : configSer.get("JWT_SECRET"),
+    //   }),
+    //   inject : [ConfigService]
+    // }),
     TypeOrmModule.forRootAsync({
       imports : [ConfigModule],
       useFactory : () => ({
         ...dataSourceOption,
-        autoLoadEntities : true
+        autoLoadEntities : true,
+        synchronize: true
       })
     }),
     WebinarModule,
-    ConfigModule.forRoot({
-      isGlobal : true,
-    })
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService, UserService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

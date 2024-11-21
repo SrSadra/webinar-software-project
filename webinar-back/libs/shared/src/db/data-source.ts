@@ -12,7 +12,12 @@ import { webinarFilesEntity } from "../entities/webinarFiles.entity";
 
 export const dataSourceOption : DataSourceOptions = {
     type : 'mysql',
-    url : process.env.DATABASE_URL,
+    // url : process.env.DATABASE_URL,
+    port: 3306,
+    host : "localhost",
+    username : "root",
+    password : "123456",
+    database : "nestjs",
     // host : process.env.
     // url : "jdbc:mysql://root:3306/nestjs",
     entities : [userEntity,CertificateEntity,EpisodeEntity,ManagerEntity,ProfileEntity,TransactionEntity,webinarEntity,WebinarCategory,webinarFilesEntity,SubCategoryEntity],

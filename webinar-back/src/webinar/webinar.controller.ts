@@ -1,7 +1,7 @@
 import { newWebinarDto } from '@app/shared/dtos/newWebinar.dto';
 import { MulterFile } from '@app/shared/interfaces/multer.interface';
 import { Body, Controller, Post, Put, Req, UploadedFile } from '@nestjs/common';
-import { Express, Request } from 'express';
+import { Request } from 'express';
 import { WebinarService } from './webinar.service';
 
 @Controller('webinar')

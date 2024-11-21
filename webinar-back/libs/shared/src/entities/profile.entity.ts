@@ -1,10 +1,11 @@
 import { CertificateEntity } from './certificate.entity';
-import { Column, JoinColumn, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { userEntity } from "./user.entity";
 import { webinarEntity } from "./webinar.entity";
 import { TransactionEntity } from './transaction.entity';
 import { GraduationStatus } from '../enums/graduationStatus.enum';
 
+@Entity("profile")
 export class ProfileEntity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -14,7 +15,7 @@ export class ProfileEntity {
     user: userEntity;
 
     @Column({nullable: true})
-    graduation: GraduationStatus
+    graduation: number; // in type graduationstatus
 
     //fieldStudy ??
 

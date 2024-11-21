@@ -52,17 +52,21 @@ export class CategoryService {
     }
 
     async createCategory(newCategory : newCategoryDto){
-        const existed = await this.categoryRep.findCategoryByTitle(newCategory.title);
+        const {subCategory, title} = newCategory
+        console.log("existed");
+        const existed = await this.categoryRep.findByCondition({
+            where : {title}
+        });
+        console.log("existed");
         if (existed){
             throw new ConflictException("Category already exist!");
         }
         const category = this.categoryRep.create({
-            title: newCategory.title,
+            title,
             webinar : []
         });
-        if (newCategory.subCategory){
-            const subCats = newCategory.subCategory;
-            subCats.forEach(async (el) => {
+        if (subCategory){
+            subCategory.forEach(async (el) => {
                 const newSubCat = this.subCategoryRep.create({title: el, category : category});
                 await this.subCategoryRep.save(newSubCat);
             })

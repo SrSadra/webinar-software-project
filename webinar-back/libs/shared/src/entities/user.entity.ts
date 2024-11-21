@@ -1,7 +1,8 @@
-import { BeforeInsert, BeforeUpdate, Column, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
-import { Roles } from "../enums/roles.enum";
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Roles, UserRoles } from "../enums/roles.enum";
 import { ProfileEntity } from "./profile.entity";
 
+@Entity("users")
 export class userEntity {
     @PrimaryColumn()
     username: string;
@@ -30,8 +31,8 @@ export class userEntity {
     @Column({nullable: true})
     whatsAppNumber: string; //??
 
-    @Column()
-    role: Roles
+    @Column({default: Roles.USER,enum: UserRoles})
+    role: "user" | "doctor"
 
     @OneToOne(() => ProfileEntity, (profile) => profile.user)
     profile: ProfileEntity;

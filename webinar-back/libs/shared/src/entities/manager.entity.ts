@@ -1,8 +1,9 @@
-import { Column, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { webinarEntity } from "./webinar.entity";
 
+@Entity("manager")
 export class ManagerEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     username: string;
 
     @Column()

@@ -15,7 +15,7 @@ export class ManagerService {
         if (!user){
             throw new ForbiddenException("user doesnt exist");
         }
-        if (user.role == Roles.MANAGER){
+        if (!user.role){
             throw new ForbiddenException("user is already manager!");
         }
         const {username,email,phoneNumber,firstname,lastname,persianN,password} = user;

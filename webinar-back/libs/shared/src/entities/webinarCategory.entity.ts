@@ -1,7 +1,8 @@
-import { Column, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, TableForeignKey } from "typeorm";
 import { SubCategoryEntity } from "./subCategory.entity";
 import { webinarEntity } from "./webinar.entity";
 
+@Entity("categories")
 export class WebinarCategory{
     @PrimaryGeneratedColumn()
     id: number;

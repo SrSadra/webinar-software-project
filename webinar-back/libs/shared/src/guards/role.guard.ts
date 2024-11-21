@@ -11,9 +11,15 @@ export class RolesGuard implements CanActivate {
       throw new InternalServerErrorException("There is no roles specified!");
     }
     const request = context.switchToHttp().getRequest();
-    const userRoles = request.headers?.user?.role?.split(',');
-    console.log(userRoles);
-    const validate = this.validateRoles(roles, userRoles);
+    const user = request.user;
+    console.log(roles);
+    if (roles.includes('manager')){
+      if (!user.role){//is manager
+        return true;
+      }
+    }
+    console.log(user.role);
+    const validate = this.validateRoles(roles, user.role);
     if(!validate){
         throw new ForbiddenException("You dont have access to this route!");
     }

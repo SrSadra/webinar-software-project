@@ -1,6 +1,7 @@
-import { Column, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ProfileEntity } from "./profile.entity";
 
+@Entity("certificates")
 export class CertificateEntity {
     @PrimaryGeneratedColumn()
     id: number;
