@@ -4,6 +4,7 @@ import { userEntity } from '@app/shared/entities/user.entity';
 import { managerRepository } from '@app/shared/interfaces/repos/manager.repository';
 import { profileRepository } from '@app/shared/interfaces/repos/profile.repository';
 import { userRepository } from '@app/shared/interfaces/repos/user.repository';
+import { MailService } from '@app/shared/mailsender/mail.service';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -28,7 +29,7 @@ import { AuthService } from './auth.service';
     }),
 ],
   controllers: [AuthController],
-  providers: [AuthService,userRepository, profileRepository,managerRepository],
+  providers: [AuthService,userRepository, profileRepository,managerRepository,MailService],
   exports : [AuthService]
 })
 export class AuthModule {}

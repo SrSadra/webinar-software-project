@@ -8,11 +8,8 @@ export class webinarFilesEntity{
     id: number;
 
     @Column()
-    webinarId: number;
-
-    @Column()
     filePath: string;
 
     @ManyToOne(type => EpisodeEntity, (webinarEpisode) => webinarEpisode.files)
-    webinar: EpisodeEntity;
+    webinarEpisode: EpisodeEntity;
 }

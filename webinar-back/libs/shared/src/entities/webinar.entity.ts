@@ -44,6 +44,9 @@ export class webinarEntity{
     @ManyToOne(type => ManagerEntity, (creator) => creator.webinars)
     creator: ManagerEntity;
 
+    @ManyToOne(type => ProfileEntity, (teacher) => teacher.webinarTeacher)
+    teacher: ProfileEntity;
+
     @OneToMany(type => EpisodeEntity, (episode) => episode.webinar)
     episodes: EpisodeEntity[];
 

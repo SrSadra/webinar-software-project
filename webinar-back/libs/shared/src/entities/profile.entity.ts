@@ -19,6 +19,9 @@ export class ProfileEntity {
 
     //fieldStudy ??
 
+    @OneToMany(() => webinarEntity, (webinar) => webinar.teacher)
+    webinarTeacher: webinarEntity[];
+
     @ManyToMany(() => webinarEntity, (webinar) => webinar.participants)
     webinar: webinarEntity[];
 
@@ -27,6 +30,4 @@ export class ProfileEntity {
 
     @OneToMany(() => TransactionEntity, (transaction) => transaction.profile)
     transaction: TransactionEntity[];
-
-
 }

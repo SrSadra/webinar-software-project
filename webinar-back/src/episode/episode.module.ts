@@ -1,0 +1,17 @@
+import { Module } from '@nestjs/common';
+import { EpisodeService } from './episode.service';
+import { EpisodeController } from './episode.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { EpisodeEntity } from '@app/shared/entities/episode.entity';
+import { SharedModule } from '@app/shared';
+import { episodeRepository } from '@app/shared/interfaces/repos/episode.repository';
+import { MulterModule } from '@nestjs/platform-express';
+import { CloudinaryModule } from '@app/shared/cloudinary/cloudinary.module';
+import { webinarFilesEntity } from '@app/shared/entities/webinarFiles.entity';
+
+@Module({
+  imports: [TypeOrmModule.forFeature([EpisodeEntity,webinarFilesEntity]), SharedModule.registerRmq("EPISODE_SERVICE", "episode_queue"),CloudinaryModule],
+  providers: [EpisodeService, episodeRepository],
+  controllers: [EpisodeController]
+})
+export class EpisodeModule {}

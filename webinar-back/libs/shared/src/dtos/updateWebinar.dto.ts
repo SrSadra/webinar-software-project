@@ -1,26 +1,30 @@
 import { Transform } from "class-transformer";
-import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, Length } from "class-validator";
+import { IsArray, IsBoolean, IsNumber, IsOptional, IsString, Length } from "class-validator";
 import { webinarStatus } from "../enums/webinarStatus.enum";
 
-export class newWebinarDto {
+export class updateWebinarDto {
     @IsString()
-    persianTitle: string;
+    @IsOptional()
+    persianTitle?: string;
 
     @IsString()
-    englishTitle: string;
+    @IsOptional()
+    englishTitle?: string;
 
     @IsOptional()
     status?: webinarStatus;
 
     @IsString()
+    @IsOptional()
     @Length(5,100,{message : "Description must be at least 5 characters long"})
-    description: string;
+    description?: string;
 
     // image:string; //???
 
     @Transform(({ value }) => Number(value)) // is necessery for this type of send req
     @IsNumber()
-    price: number;
+    @IsOptional()
+    price?: number;
 
     @IsNumber()
     @IsOptional()
@@ -30,14 +34,17 @@ export class newWebinarDto {
 
     @Transform(({ value }) => Boolean(value))
     @IsBoolean()
-    onlyDoctor: boolean;
+    @IsOptional()
+    onlyDoctor?: boolean;
 
     @IsString()
-    categoryName: string; // maybe id in future
+    @IsOptional()
+    categoryName?: string; // maybe id in future
 
     @IsArray()
+    @IsOptional()
     @Transform(({ value }) => (typeof value === 'string' ? JSON.parse(value) : value))
-    subCategoryNames : string[];
+    subCategoryNames? : string[];
     
     // @IsArray()
     // subCategoryNames: string[];

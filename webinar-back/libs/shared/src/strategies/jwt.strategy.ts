@@ -10,12 +10,19 @@ import { ConfigService } from "@nestjs/config";
 import { managerRepository } from "../interfaces/repos/manager.repository";
 import { userEntity } from "../entities/user.entity";
 import { ManagerEntity } from "../entities/manager.entity";
+import { Request } from "express";
 
 @Injectable()
 export class jwtStrategy extends PassportStrategy(Strategy,"jwt"){
     constructor(private readonly userRep : userRepository, private readonly configSer: ConfigService,private readonly managerRep: managerRepository) {
       super({
-        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        jwtFromRequest: 
+        ExtractJwt.fromExtractors([
+          (request: Request) => {
+            return request?.cookies.Authentication;
+          },
+          ExtractJwt.fromAuthHeaderAsBearerToken() // or use as bearer
+        ]),
         ignoreExpiration: false,
         secretOrKey : configSer.get("JWT_SECRET")
         })
@@ -24,6 +31,7 @@ export class jwtStrategy extends PassportStrategy(Strategy,"jwt"){
     
     async validate(payload: any) { // we can check the token with db here or elsewhere. return is used like req.user by @req 
       const payloadUser = payload.user;
+      
       let isManager: userEntity | ManagerEntity = await this.managerRep.findOneByEmail(payloadUser.email);
       if (!isManager){
         isManager = await this.userRep.findOneByEmail(payloadUser.email);

@@ -19,7 +19,7 @@ export class EpisodeEntity {
     @ManyToOne(type => webinarEntity, (webinar) => webinar.episodes)
     webinar: webinarEntity;
 
-    @OneToMany(type => webinarFilesEntity, (file) => file.webinar)
+    @OneToMany(type => webinarFilesEntity, (file) => file.webinarEpisode)
     files: webinarFilesEntity[]
 
 

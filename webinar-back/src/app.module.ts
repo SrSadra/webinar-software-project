@@ -13,10 +13,11 @@ import { dataSourceOption } from '@app/shared/db/data-source';
 import { WebinarModule } from './webinar/webinar.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { EpisodeModule } from './episode/episode.module';
 
 @Module({
   imports: [
-    AuthModule, ManagerModule, UserModule, CategoryModule,
+    AuthModule, ManagerModule,
     ConfigModule.forRoot({
       isGlobal : true,
     }),

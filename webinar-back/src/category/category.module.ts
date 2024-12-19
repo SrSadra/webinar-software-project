@@ -1,3 +1,4 @@
+import { SharedModule } from '@app/shared';
 import { SubCategoryEntity } from '@app/shared/entities/subCategory.entity';
 import { WebinarCategory } from '@app/shared/entities/webinarCategory.entity';
 import { RolesGuard } from '@app/shared/guards/role.guard';
@@ -13,7 +14,7 @@ import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
 
 @Module({
-  imports : [TypeOrmModule.forFeature([WebinarCategory,SubCategoryEntity]),jwtAuthModule],
+  imports : [TypeOrmModule.forFeature([SubCategoryEntity]),jwtAuthModule,SharedModule.registerRmq("CATEGORY_SERVICE", "category_queue")],
   controllers: [CategoryController],
   providers: [CategoryService,categoryRepository,subCategoryRepository]
 })

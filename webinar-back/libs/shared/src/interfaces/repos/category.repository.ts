@@ -11,7 +11,7 @@ export class categoryRepository extends BaseAbstractRepository<WebinarCategory> 
         super(categoryRep);
     }
 
-    async findCategoryByTitle(title: string, isActive? : boolean){
+    async findCategoriesByTitle(title: string, isActive? : boolean){
         const query = this.categoryRep.createQueryBuilder("category").where("category.title LIKE :title", {title: `%${title}%`});
         if (isActive !== undefined){
             query.andWhere('category.isActive = :isActive', { isActive });
@@ -21,6 +21,13 @@ export class categoryRepository extends BaseAbstractRepository<WebinarCategory> 
 
     async findCategoryByActivate(isActive: boolean){
         return await this.categoryRep.findBy({isActive});
+    }
+
+    public async findCategoryBytitle(title: string): Promise<WebinarCategory | null> {
+        let res = await this.categoryRep.createQueryBuilder()
+            .where('title =:title', { title })
+            .getOne();
+        return res;
     }
 
     async categoryActivate(title: string, isActive: boolean){

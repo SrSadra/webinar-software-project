@@ -7,7 +7,7 @@ export class WebinarCategory{
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({unique: true})
+    @Column({unique: true, name: "title"})
     title: string;
 
     @OneToMany(() => SubCategoryEntity, (subcategory) => subcategory.category)

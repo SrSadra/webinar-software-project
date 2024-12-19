@@ -5,6 +5,7 @@ import { WebinarCategory } from '@app/shared/entities/webinarCategory.entity';
 import { newCategoryDto } from '@app/shared/dtos/newCategory.dto';
 import { subCategoryRepository } from '@app/shared/interfaces/repos/subcategory.repository';
 import { SubCategoryEntity } from '@app/shared/entities/subCategory.entity';
+import { In } from 'typeorm';
 
 @Injectable()
 export class CategoryService {
@@ -76,7 +77,7 @@ export class CategoryService {
 
     async searchCategory(title?: string, isActive? : boolean){
         if (title){
-            return await this.categoryRep.findCategoryByTitle(title, isActive);
+            return await this.categoryRep.findCategoriesByTitle(title, isActive);
         }
         else if (isActive){
             return await this.categoryRep.findCategoryByActivate(isActive);
@@ -84,5 +85,15 @@ export class CategoryService {
         else{
             throw new NotFoundException("No webinar has found!");
         }
+    }
+
+    async findCategoryBytitle(title: string){
+        return await this.categoryRep.findCategoriesByTitle(title);
+    }
+
+    async findAllSubBytitle(subCategories : string[]){
+        return await this.subCategoryRep.findAll({where : {
+            title: In(subCategories)
+        }});
     }
 }

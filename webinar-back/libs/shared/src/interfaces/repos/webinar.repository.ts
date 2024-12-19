@@ -4,7 +4,11 @@ import { Repository } from "typeorm";
 import { BaseAbstractRepository } from "../base/base.abstract.repository";
 
 export class webinarRepository extends BaseAbstractRepository<webinarEntity> {
-    constructor(@InjectRepository(webinarEntity) webinarRep : Repository<webinarEntity>){
+    constructor(@InjectRepository(webinarEntity) private webinarRep : Repository<webinarEntity>){
         super(webinarRep);
+    }
+
+    public async findById(id: number): Promise<webinarEntity>{
+        return await this.webinarRep.findOneBy({id});
     }
 }
