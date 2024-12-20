@@ -1,13 +1,13 @@
-import { WebinarCategory } from "@app/shared/entities/webinarCategory.entity";
+import { WebinarCategoryEntity } from "@app/shared/entities/webinarCategory.entity";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { BaseAbstractRepository } from "../base/base.abstract.repository";
 
 
-@Injectable()
-export class categoryRepository extends BaseAbstractRepository<WebinarCategory> {
-    constructor(@InjectRepository(WebinarCategory) private readonly categoryRep : Repository<WebinarCategory>){
+// @Injectable()
+export class categoryRepository extends BaseAbstractRepository<WebinarCategoryEntity> {
+    constructor(@InjectRepository(WebinarCategoryEntity) private readonly categoryRep : Repository<WebinarCategoryEntity>){
         super(categoryRep);
     }
 
@@ -23,7 +23,7 @@ export class categoryRepository extends BaseAbstractRepository<WebinarCategory> 
         return await this.categoryRep.findBy({isActive});
     }
 
-    public async findCategoryBytitle(title: string): Promise<WebinarCategory | null> {
+    public async findCategoryBytitle(title: string): Promise<WebinarCategoryEntity | null> {
         let res = await this.categoryRep.createQueryBuilder()
             .where('title =:title', { title })
             .getOne();

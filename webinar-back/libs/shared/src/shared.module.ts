@@ -4,6 +4,8 @@ import { CloudinaryService } from './cloudinary/cloudinary.service';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { dataSourceOption } from './db/data-source';
 
 @Module({
   imports: [
@@ -11,7 +13,18 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
       isGlobal: true,
       envFilePath: '/.env',
     }),
-    CloudinaryModule
+    CloudinaryModule,
+    TypeOrmModule.forRootAsync({
+      imports : [ConfigModule],
+      useFactory : () => ({
+        ...dataSourceOption,
+        autoLoadEntities : true,
+        synchronize: true
+      })
+    }),
+    ConfigModule.forRoot({
+      isGlobal : true,
+    }),
   ],
   providers: [SharedService, CloudinaryService],
   exports: [SharedService],

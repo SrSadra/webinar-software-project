@@ -1,3 +1,4 @@
+import { forgetPassDto } from '@app/shared/dtos/forget-pass.dto';
 import { loginUserDto } from '@app/shared/dtos/loginUser.dto';
 import { newPasswordDto } from '@app/shared/dtos/new-pass.dto';
 import { registerUserDto } from '@app/shared/dtos/registerUser.dto';
@@ -22,14 +23,7 @@ export class AuthService {
         try{
           const {email, password } = user;
 
-          let foundedUser: ManagerEntity| userEntity = await this.managerRep.findByCondition({where : {email}});
-          console.log(foundedUser);
-          if (!foundedUser){
-            foundedUser = await this.findUserByEmail(email);
-          }
-          if (!foundedUser){
-            throw new UnauthorizedException();
-          }
+          let foundedUser: ManagerEntity| userEntity = await this.findUserManager(email);
           console.log(foundedUser);
           const validate = this.validatePassword(password,foundedUser.password);
           if (!validate){
@@ -58,8 +52,10 @@ export class AuthService {
             const hashed = await this.hashPassword(password);
 
             if(createUser.username.endsWith("_admin")){//tmp
+              const hashed = await this.hashPassword(createUser.password);
               manager = await this.managerRep.save({ //cng
                 ...createUser,
+                password: hashed
               });
               delete manager.password;
               return manager;
@@ -115,36 +111,53 @@ export class AuthService {
     //     }
     // }
 
-    async forgotPassword(email: string){
-      const user = await this.userRep.findOneByEmail(email);
-      if (!user){
-         throw new NotFoundException("User not found!");
-      }
+    async forgotPassword(emailDto: forgetPassDto){
+      const {email} = emailDto;
+      let user: userEntity | ManagerEntity = await this.findUserManager(email);
       const resetToken = "uen89wre8"
       // = nanoid(64);
       const expiryDate = new Date();
       expiryDate.setHours(expiryDate.getHours() + 1);
       const token = this.jwtSer.sign({resetLink : resetToken, expDate:expiryDate, email: user.email} as ForgetPassword);
-      await this.mailSer.sendPasswordResetEmail(email,token);
+      return await this.mailSer.sendPasswordResetEmail(email,token);// is that secure??
     }
 
     async resetPass(newPass : newPasswordDto, token: string){
       const decodedData = this.jwtSer.decode(token) as ForgetPassword;
       const {expDate,email} = decodedData;
-      if (expDate.getHours() < (new Date().getHours())){
+      console.log(expDate);
+      if (expDate.getHours < (new Date().getHours)){
         throw new UnauthorizedException('Invalid link');
       }
-      const foundeduser = await this.findUserByEmail(email);
+      const foundeduser = await this.findUserManager(email);
       if (!foundeduser){
         throw new NotFoundException("User not found!");
       }
       foundeduser.password = await this.hashPassword(newPass.newpass);
-      return await this.userRep.save(foundeduser);
+      // return await this.userRep.save(foundeduser);
+      if (foundeduser instanceof ManagerEntity){
+        return await this.managerRep.save(foundeduser)
+      }
+      else if (foundeduser instanceof userEntity){
+        return await this.userRep.save(foundeduser);
+      }
     }
 
     async findUserByEmail(email : string){ // this also extract pass
         return await this.userRep.findByCondition({ where: { email },
           select: ['username', 'firstname', 'lastname', 'email', 'password', "phoneNumber", "role"],
         })
+    }
+
+    async findUserManager(email: string){
+      let foundedUser: ManagerEntity| userEntity = await this.findUserByEmail(email);
+      if (!foundedUser){
+        foundedUser = await this.managerRep.findByCondition({where : {email}});
+      }
+      console.log(foundedUser);
+      if (!foundedUser){
+        throw new UnauthorizedException();
+      }
+      return foundedUser;
     }
 }

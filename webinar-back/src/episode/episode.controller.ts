@@ -12,7 +12,9 @@ import { EpisodeService } from './episode.service';
 
 @Controller('webinar/:id') // ? 
 export class EpisodeController {
-    constructor(private episodeSer: EpisodeService, private sharedSer: SharedService,@Inject("cloudinary") private cloudinaryConf: typeof Cloudinary){}
+    constructor(private episodeSer: EpisodeService, private sharedSer: SharedService,
+        // @Inject("cloudinary") private cloudinaryConf: typeof Cloudinary
+        ){}
 
     @Post("addfile")
     @UseInterceptors(FilesInterceptor("episodeFiles", 10)) // episodeFiles name shoud match with html name attr // how to make it globally

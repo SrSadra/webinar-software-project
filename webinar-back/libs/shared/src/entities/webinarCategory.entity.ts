@@ -3,7 +3,7 @@ import { SubCategoryEntity } from "./subCategory.entity";
 import { webinarEntity } from "./webinar.entity";
 
 @Entity("categories")
-export class WebinarCategory{
+export class WebinarCategoryEntity{
     @PrimaryGeneratedColumn()
     id: number;
 

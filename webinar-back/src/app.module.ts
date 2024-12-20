@@ -6,7 +6,6 @@ import { ManagerModule } from './manager/manager.module';
 import { UserService } from './user/user.service';
 import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
-import { CategoryModule } from './category/category.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { dataSourceOption } from '@app/shared/db/data-source';
@@ -14,13 +13,15 @@ import { WebinarModule } from './webinar/webinar.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { EpisodeModule } from './episode/episode.module';
+import { SharedModule } from '@app/shared';
 
 @Module({
   imports: [
     AuthModule, ManagerModule,
-    ConfigModule.forRoot({
-      isGlobal : true,
-    }),
+    // ConfigModule.forRoot({
+    //   isGlobal : true,
+    // }),
+    SharedModule,
     // JwtModule.registerAsync({
     //   imports : [ConfigModule],
     //   useFactory: (configSer : ConfigService) => ({
@@ -29,14 +30,14 @@ import { EpisodeModule } from './episode/episode.module';
     //   }),
     //   inject : [ConfigService]
     // }),
-    TypeOrmModule.forRootAsync({
-      imports : [ConfigModule],
-      useFactory : () => ({
-        ...dataSourceOption,
-        autoLoadEntities : true,
-        synchronize: true
-      })
-    }),
+    // TypeOrmModule.forRootAsync({
+    //   imports : [ConfigModule],
+    //   useFactory : () => ({
+    //     ...dataSourceOption,
+    //     autoLoadEntities : true,
+    //     synchronize: true
+    //   })
+    // }),
     WebinarModule,
   ],
   controllers: [AppController],

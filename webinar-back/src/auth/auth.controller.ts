@@ -1,3 +1,4 @@
+import { forgetPassDto } from '@app/shared/dtos/forget-pass.dto';
 import { loginUserDto } from '@app/shared/dtos/loginUser.dto';
 import { newPasswordDto } from '@app/shared/dtos/new-pass.dto';
 import { registerUserDto } from '@app/shared/dtos/registerUser.dto';
@@ -24,8 +25,13 @@ export class AuthController {
         return await this.authSer.register(registerDto);
     }
 
-    @Put("reset-password")
-    async resetPass(newPasword: newPasswordDto,@Query("token") token : string){ // jwt token
+    @Put("reset-password")//need check
+    async resetPass(@Body() newPasword: newPasswordDto,@Query("token") token : string){ // jwt token
         return await this.authSer.resetPass(newPasword,token);
+    }
+
+    @Post("forget-password")
+    async forgetPass(@Body() email: forgetPassDto){
+        return await this.authSer.forgotPassword(email);
     }
 }

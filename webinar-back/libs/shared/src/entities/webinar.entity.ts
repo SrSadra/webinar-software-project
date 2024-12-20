@@ -6,7 +6,7 @@ import { ManagerEntity } from "./manager.entity";
 import { ProfileEntity } from "./profile.entity";
 import { userEntity } from "./user.entity";
 import { webinarFilesEntity } from "./webinarFiles.entity";
-import { WebinarCategory } from './webinarCategory.entity';
+import { WebinarCategoryEntity } from './webinarCategory.entity';
 import { SubCategoryEntity } from './subCategory.entity';
 
 @Entity("webinars")
@@ -57,9 +57,9 @@ export class webinarEntity{
     @OneToMany(() => TransactionEntity, (transaction) => transaction.webinar)
     transactions: TransactionEntity[];
 
-    @ManyToOne(() => WebinarCategory, (category) => category.webinar)
+    @ManyToOne(() => WebinarCategoryEntity, (category) => category.webinar)
     // @JoinTable({name: "webibnar-cattegory"})
-    category: WebinarCategory;
+    category: WebinarCategoryEntity;
 
     @ManyToMany(() => SubCategoryEntity, (subcategory) => subcategory.webinar, {cascade : true})// to enable row deletion when we delete one side of relation
     subcategories: SubCategoryEntity[];

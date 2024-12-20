@@ -6,7 +6,7 @@ import { updateWebinarDto } from '@app/shared/dtos/updateWebinar.dto';
 import { ProfileEntity } from '@app/shared/entities/profile.entity';
 import { SubCategoryEntity } from '@app/shared/entities/subCategory.entity';
 import { webinarEntity } from '@app/shared/entities/webinar.entity';
-import { WebinarCategory } from '@app/shared/entities/webinarCategory.entity';
+import { WebinarCategoryEntity } from '@app/shared/entities/webinarCategory.entity';
 import { MulterFile } from '@app/shared/interfaces/multer.interface';
 import { webinarRepository } from '@app/shared/interfaces/repos/webinar.repository';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
@@ -33,7 +33,7 @@ export class WebinarService {
 
         const {categoryName, subCategoryNames} = createDto;
         console.log(categoryName);
-        const $ob = this.categorySer.send<WebinarCategory>({cmd: "find-category-by-title"}, {title: categoryName});
+        const $ob = this.categorySer.send<WebinarCategoryEntity>({cmd: "find-category-by-title"}, {title: categoryName});
         const category = await firstValueFrom($ob).catch((err) => console.log(err));
         console.log(category);
         if (!category){
@@ -134,8 +134,8 @@ export class WebinarService {
             webinar.onlyDoctor = updateWebinarDto.onlyDoctor;
             }
             if (updateWebinarDto.categoryName) {
-            const $ob = this.categorySer.send<WebinarCategory>({cmd: "find-category-by-title"}, {title: categoryName});
-            const category: WebinarCategory = await firstValueFrom($ob).catch((err) => err);
+            const $ob = this.categorySer.send<WebinarCategoryEntity>({cmd: "find-category-by-title"}, {title: categoryName});
+            const category: WebinarCategoryEntity = await firstValueFrom($ob).catch((err) => err);
             if (!category) {
                 throw new NotFoundException(`Category ${categoryName} not found.`);
             }

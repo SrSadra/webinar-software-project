@@ -20,12 +20,14 @@ export class MailService {
 
     async sendPasswordResetEmail(toEmail: string, token: string){
         const resetLink = `${this.configSer.get("MAIN_URL")}/auth/reset-password?token=${token}`;
+        console.log(resetLink);
         const mailOption: MailOptions = {
-            from: "Webiline Auth support",
+            from: this.configSer.get("NODEMAILER_USER"),
             to: toEmail,
             subject: "password reset request",
             html: `<p>You requested a password reset. Click the link below to reset your password:</p><p><a href="${resetLink}">Reset Password</a></p>`
             };
+        console.log(mailOption);
         await this.transporter.sendMail(mailOption);
         }
     }

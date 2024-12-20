@@ -1,7 +1,7 @@
 import { categoryRepository } from '@app/shared/interfaces/repos/category.repository';
 import { updateCategoryDto } from '@app/shared/dtos/updateCategory.dto';
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { WebinarCategory } from '@app/shared/entities/webinarCategory.entity';
+import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { WebinarCategoryEntity } from '@app/shared/entities/webinarCategory.entity';
 import { newCategoryDto } from '@app/shared/dtos/newCategory.dto';
 import { subCategoryRepository } from '@app/shared/interfaces/repos/subcategory.repository';
 import { SubCategoryEntity } from '@app/shared/entities/subCategory.entity';
@@ -9,9 +9,9 @@ import { In } from 'typeorm';
 
 @Injectable()
 export class CategoryService {
-    constructor(private readonly categoryRep : categoryRepository, private readonly subCategoryRep : subCategoryRepository){}
+    constructor(@Inject("CATEGORY_REPOSITORY") private readonly categoryRep : categoryRepository,@Inject("SUBCATEGORY_REPOSITORY") private readonly subCategoryRep: subCategoryRepository ,){}
 
-    async updateCategory(id: number, dto: updateCategoryDto): Promise<WebinarCategory> {
+    async updateCategory(id: number, dto: updateCategoryDto): Promise<WebinarCategoryEntity> {
         const category = await this.categoryRep.findByCondition({
           where: { id },
           relations: ['subCategory'],

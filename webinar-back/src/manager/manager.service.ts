@@ -4,11 +4,14 @@ import { Roles } from '@app/shared/enums/roles.enum';
 import { categoryRepository } from '@app/shared/interfaces/repos/category.repository';
 import { managerRepository } from '@app/shared/interfaces/repos/manager.repository';
 import { userRepository } from '@app/shared/interfaces/repos/user.repository';
-import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class ManagerService {
-    constructor(private readonly userRep : userRepository,private readonly managerRep : managerRepository ,private readonly categoryRep: categoryRepository ){}
+    constructor(private readonly userRep : userRepository,private readonly managerRep : managerRepository ,
+        // ,private readonly categoryRep: categoryRepository 
+        @Inject("CATEGORY_REPOSITORY") private readonly categoryRep: categoryRepository 
+        ){}
 
     async promoteUser(useremail : string){ // this is temporaly
         const user = await this.userRep.findOneByEmail(useremail);
@@ -32,8 +35,8 @@ export class ManagerService {
         
     }
 
-    async deactiveCategory(categoryTitle: string){
-        return await this.categoryRep.categoryActivate(categoryTitle, false);
-    }
+    // async deactiveCategory(categoryTitle: string){
+    //     return await this.categoryRep.categoryActivate(categoryTitle, false);
+    // }
 
 }
