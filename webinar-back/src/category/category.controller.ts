@@ -6,7 +6,7 @@ import { Roles } from '@app/shared/enums/roles.enum';
 import { jwtGuard } from '@app/shared/guards/jwt.guard';
 import { RolesGuard } from '@app/shared/guards/role.guard';
 import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
-import { Ctx, MessagePattern, RmqContext } from '@nestjs/microservices';
+import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { AuthGuard } from '@nestjs/passport';
 import { CategoryService } from './category.service';
 
@@ -33,13 +33,13 @@ export class CategoryController {
 
 
     @MessagePattern({cmd: "find-category-by-title"})
-    async findCategoryBytitle(@Ctx() context : RmqContext, payload: {title: string} ){
+    async findCategoryBytitle(@Ctx() context : RmqContext,@Payload() payload: {title: string} ){
         this.sharedSer.ackMessage(context);
         return await this.categorySer.findCategoryBytitle(payload.title);
     }
 
     @MessagePattern({cmd: "find-all-sub-by-title"})
-    async findAllSubBytitle(@Ctx() context : RmqContext, payload: {subcategories: string[]} ){
+    async findAllSubBytitle(@Ctx() context : RmqContext,@Payload() payload: {subcategories: string[]} ){
         this.sharedSer.ackMessage(context);
         return await this.categorySer.findAllSubBytitle(payload.subcategories);
     }

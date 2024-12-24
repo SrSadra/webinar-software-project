@@ -3,8 +3,8 @@ import { newEpisodeDto } from '@app/shared/dtos/newEpisode.dto';
 import { webinarEntity } from '@app/shared/entities/webinar.entity';
 import { MultipleFilesInterceptor } from '@app/shared/interceptors/file.interceptor';
 import { MulterFile } from '@app/shared/interfaces/multer.interface';
-import { Controller, Inject, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
-import { Ctx, MessagePattern, RmqContext } from '@nestjs/microservices';
+import { Controller, Inject, Param, Post, Query, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Ctx, EventPattern, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { v2 as Cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
@@ -18,16 +18,21 @@ export class EpisodeController {
 
     @Post("addfile")
     @UseInterceptors(FilesInterceptor("episodeFiles", 10)) // episodeFiles name shoud match with html name attr // how to make it globally
-    // @UseInterceptors(FilesInterceptor("episodeFiles", 10))
-    async addFiles(@Query("title") episodeTitle: string,@UploadedFile() files : MulterFile[]){ //multiple files
+    async addFiles(@Query("title") episodeTitle: string,@UploadedFiles() files : MulterFile[]){ //multiple files
         return await this.episodeSer.uploadEpisodeFiles(files, episodeTitle);
     }
 
     @MessagePattern({cmd: "create-episode"})
-    createEpisode(@Ctx() context : RmqContext, payload: newEpisodeDto & {webinar: webinarEntity}){
+    async createEpisode(@Ctx() context : RmqContext,@Payload() payload: {newEpisode:newEpisodeDto ,webinar: webinarEntity}){
         this.sharedSer.ackMessage(context);
-        this.episodeSer.createEpisode(payload, payload.webinar);
+        return await this.episodeSer.createEpisode(payload.newEpisode, payload.webinar);
     }
+
+    @EventPattern(undefined)
+    tst(@Ctx() context : RmqContext){
+        console.log("trouble?");
+    }
+    
 
     
 

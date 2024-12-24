@@ -91,7 +91,8 @@ export class WebinarService {
         try{
             const webinar = await this.webinarRep.findById(webinarId);
             if (webinar){
-                const $ob = this.episodeSer.send({cmd: "create-episode"}, newEpisode);
+                console.log({cmd: "create-episode"}, newEpisode);
+                const $ob = this.episodeSer.send({cmd: "create-episode"}, {newEpisode: newEpisode,webinar});
                 return firstValueFrom($ob).catch((err) => err);
             }
             else{

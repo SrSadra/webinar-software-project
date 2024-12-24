@@ -16,7 +16,7 @@ export class EpisodeService {
         if (!foundedEpisode){
             throw new NotFoundException("Episode not found!");
         }
-        const filesUrl = await this.cloudinarySer.uploadFiles(files,`${foundedEpisode.webinar.id}/${foundedEpisode.id}`);
+        const filesUrl = await this.cloudinarySer.uploadFiles(files,`${foundedEpisode.webinar}/${foundedEpisode.id}`);
         const createdFiles = filesUrl.map((url) => 
             this.episodeFileRep.create({
                 filePath: url,
@@ -39,7 +39,7 @@ export class EpisodeService {
                     }
                 });
                 const episode = this.episodeRep.create({...newEpisode,webinar});
-                await this.episodeRep.save(episode);
+                return await this.episodeRep.save(episode);
             }
             else{
                 throw new HttpException('This episode already exist!', HttpStatus.CONFLICT);

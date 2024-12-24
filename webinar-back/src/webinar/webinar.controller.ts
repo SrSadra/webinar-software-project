@@ -35,7 +35,7 @@ export class WebinarController {
 
     @Role(Roles.MANAGER)
     @UseGuards(RolesGuard)
-    @Post(":id/addEpisode")
+    @Post(":id/add-episode")
     async addEpisode(@Body() newEpisode: newEpisodeDto,@Param("id") webinarId: number){
         return  await this.webinarSer.addEpisode(newEpisode,webinarId);
     }

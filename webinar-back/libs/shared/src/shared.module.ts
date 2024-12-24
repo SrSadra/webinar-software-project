@@ -35,6 +35,7 @@ export class SharedModule {
         {
           provide : service,
           useFactory : (configSer : ConfigService) => {
+
             const user  = configSer.get("RABBITMQ_USER");
             const pass = configSer.get("RABBITMQ_PASS");
             const host = configSer.get("RABBITMQ_HOST");
