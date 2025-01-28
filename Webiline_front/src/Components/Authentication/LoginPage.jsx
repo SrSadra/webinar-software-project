@@ -3,47 +3,36 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import "./LoginPage.css";
-import { login } from "../../services/authService";
+import { login } from "../../services/userServices";
 
 const schema = z.object({
   email: z
     .string()
-    .email({ message: "Please enter valid email address" }),
-    password: z
+    .email({ message: "Please enter valid email address" })
+    .min(3),
+  password: z
     .string()
-    .min(6, { message: "Password should be at least 6 characters" })
-    .max(50, { message: "Password should not exceed 50 characters" }),
+    .min(8, { message: "Password should be at least 8 characters" }),
 });
 
 const LoginPage = () => {
+  const [formError, setFormError] = useState("");
   const {
     register,
     handleSubmit,
-    // formState: { errors },
+    formState: { errors },
   } = useForm({ resolver: zodResolver(schema) });
+  const onSubmit = async (FormData) => {
+    try {
+      await login(FormData);
 
-
-  const [errors, setErrors] = useState({message: null});
-
-  const onSubmit = async (formData) => {
-    try{
-      const res = await login(formData);
-      if (res.msg == ""){
-        console.log("Login successful:", data);
-        //redirect dashboard
-        return;
+      window.location = "/";
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        setFormError(err.response.data.message);
       }
     }
-    catch(err){
-        // console.error("Login failed:");
-        console.log(err.response.data.msg);
-        setErrors(() => ({
-          message: err.response.data.msg
-        }));
-      }
   };
-
-
   return (
     <section className="align_center form_page">
       <form className="authentication_form" onSubmit={handleSubmit(onSubmit)}>
@@ -59,8 +48,8 @@ const LoginPage = () => {
               placeholder="Enter your email address"
               {...register("email")}
             />
-            {errors.me && (
-              <em className="form_error">{errors.message}</em>
+            {errors.email && (
+              <em className="form_error">{errors.email.message}</em>
             )}
           </div>
           <div>
@@ -73,10 +62,11 @@ const LoginPage = () => {
               placeholder="Enter your password"
               {...register("password")}
             />
-            {errors && (
-              <em className="form_error">{errors.message}</em>
+            {errors.password && (
+              <em className="form_error">{errors.password.message}</em>
             )}
           </div>
+          {formError && <em className="form_error">{formError}</em>}
           <button type="submit" className="search_button form_submit">
             Submit
           </button>
