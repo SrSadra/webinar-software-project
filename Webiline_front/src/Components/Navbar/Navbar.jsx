@@ -10,7 +10,7 @@ import lock from "../../assets/locked.png";
 import LinkWithIcon from "./LinkWithIcon";
 import { Link, NavLink } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ user }) => {
   return (
     <nav className="align_center navbar">
       <div className="align_center">
@@ -35,21 +35,37 @@ const Navbar = () => {
           link="/products"
           emoji={star}
         ></LinkWithIcon>
-        <LinkWithIcon
-          title="LogIn"
-          link="/login"
-          emoji={idButton}
-        ></LinkWithIcon>
-        <LinkWithIcon title="SignUp" link="/signup" emoji={memo}></LinkWithIcon>
-        <LinkWithIcon
-          title="My Orders"
-          link="/myorders"
-          emoji={order}
-        ></LinkWithIcon>
-        <LinkWithIcon title="Logout" link="/logout" emoji={lock}></LinkWithIcon>
-        <NavLink to="/cart" className="align_center">
-          Cart <p className="align_center cart_counts">0</p>
-        </NavLink>
+        {!user && (
+          <>
+            <LinkWithIcon
+              title="LogIn"
+              link="/login"
+              emoji={idButton}
+            ></LinkWithIcon>
+            <LinkWithIcon
+              title="SignUp"
+              link="/signup"
+              emoji={memo}
+            ></LinkWithIcon>
+          </>
+        )}
+        {user && (
+          <>
+            <LinkWithIcon
+              title="My Orders"
+              link="/myorders"
+              emoji={order}
+            ></LinkWithIcon>
+            <LinkWithIcon
+              title="Logout"
+              link="/logout"
+              emoji={lock}
+            ></LinkWithIcon>
+            <NavLink to="/cart" className="align_center">
+              Cart <p className="align_center cart_counts">0</p>
+            </NavLink>
+          </>
+        )}
       </div>
     </nav>
   );
