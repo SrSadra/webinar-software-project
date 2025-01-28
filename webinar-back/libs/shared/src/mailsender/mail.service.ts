@@ -28,6 +28,6 @@ export class MailService {
             html: `<p>You requested a password reset. Click the link below to reset your password:</p><p><a href="${resetLink}">Reset Password</a></p>`
             };
         console.log(mailOption);
-        await this.transporter.sendMail(mailOption);
+        return await this.transporter.sendMail(mailOption);
         }
     }

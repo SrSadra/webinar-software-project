@@ -120,7 +120,7 @@ export class AuthService {
     async forgotPassword(emailDto: forgetPassDto){
       const {email} = emailDto;
       let user: userEntity | ManagerEntity = await this.findUserManager(email);
-      const resetToken = "uen89wre8"
+      const resetToken = "uen89wre8";
       // = nanoid(64);
       const expiryDate = new Date();
       expiryDate.setHours(expiryDate.getHours() + 1);
