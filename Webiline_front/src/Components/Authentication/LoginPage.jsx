@@ -24,12 +24,14 @@ const LoginPage = () => {
   } = useForm({ resolver: zodResolver(schema) });
   const onSubmit = async (FormData) => {
     try {
-      await login(FormData);
+      const tmp =  await login(FormData);
+      console.log(tmp);
 
       window.location = "/";
     } catch (err) {
-      if (err.response && err.response.status === 400) {
-        setFormError(err.response.data.message);
+      console.log(err);
+      if (err.response && err.response.status === 401) {
+        setFormError(err.response.data.msg);
       }
     }
   };

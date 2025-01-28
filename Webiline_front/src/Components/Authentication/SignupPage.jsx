@@ -8,17 +8,17 @@ import { signup } from "../../services/userServices";
 
 const schema = z
   .object({
-    name: z
-      .string()
-      .min(3, { message: "Name shoud be more than 3 characters" }),
+    // name: z
+    //   .string()
+    //   .min(3, { message: "Name shoud be more than 3 characters" }),
     email: z.string().email({ message: "Please enter valid email address" }),
     password: z
       .string()
-      .min(8, { message: "The password must be at least 8 characters" }),
+      .min(5, { message: "The password must be at least 8 characters" }),
     confirmPassword: z.string(),
-    deliveryAddress: z
-      .string()
-      .min(15, { message: "Address must be at least 15 characters." }),
+    phoneNumber: z.string(),
+    username: z.string(),
+    firstname: z.string()
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Confirm password does not match the Password.",
@@ -38,7 +38,7 @@ const SignupPage = () => {
     try {
       await signup(FormData, profilePic);
 
-      window.location = "/";
+      window.location = "/login"; // make a placeholder for login
     } catch (err) {
       if (err.response && err.response.status === 400) {
         setFormError(err.response.data.message);
@@ -74,16 +74,16 @@ const SignupPage = () => {
         {/* Form Inputs */}
         <div className="form_inputs signup_form_input">
           <div>
-            <label htmlFor="name">Name</label>
+            <label htmlFor="firstname">Firstame</label>
             <input
-              id="name"
+              id="firstname"
               className="form_text_input"
               type="text"
               placeholder="Enter your name"
-              {...register("name")}
+              {...register("firstname")}
             />
             {errors.name && (
-              <em className="form_error">{errors.name.message}</em>
+              <em className="form_error">{errors.firstname.message}</em>
             )}
           </div>
 
@@ -98,6 +98,35 @@ const SignupPage = () => {
             />
             {errors.email && (
               <em className="form_error">{errors.email.message}</em>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="username">Username</label>
+            <input
+              id="username"
+              className="form_text_input"
+              type="text"
+              placeholder="Enter your username"
+              {...register("username")}
+            />
+            {errors.username && (
+              <em className="form_error">{errors.username.message}</em>
+            )}
+          </div>
+
+
+          <div>
+            <label htmlFor="phonenumber">Phonenumber</label>
+            <input
+              id="phonenumber"
+              className="form_text_input"
+              type="text"
+              placeholder="Enter your phonenumber"
+              {...register("phoneNumber")}
+            />
+            {errors.email && (
+              <em className="form_error">{errors.phoneNumber.message}</em>
             )}
           </div>
 
@@ -126,19 +155,6 @@ const SignupPage = () => {
             />
             {errors.confirmPassword && (
               <em className="form_error">{errors.confirmPassword.message}</em>
-            )}
-          </div>
-
-          <div className="signup_textares_section">
-            <label htmlFor="address">Delivery Address</label>
-            <textarea
-              id="address"
-              className="input_textarea"
-              placeholder="Enter delivery address"
-              {...register("deliveryAddress")}
-            />
-            {errors.deliveryAddress && (
-              <em className="form_error">{errors.deliveryAddress.message}</em>
             )}
           </div>
         </div>

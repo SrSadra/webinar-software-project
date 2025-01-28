@@ -13,11 +13,11 @@ export class AuthController {
     @Post("login")
     async login(@Body() loginDto : loginUserDto,@Res({passthrough: true}) res : Response){
         const tmp = await this.authSer.login(loginDto);
+        console.log("token..." ,tmp);
         if (!tmp.token){
             res.status(401)
             return tmp;
         }
-        console.log("token..." ,tmp);
         res.cookie('Authentication', tmp, {
             httpOnly: true, // Prevents client-side scripts from accessing the cookie
             sameSite: 'strict', // Protect against CSRF
@@ -26,8 +26,9 @@ export class AuthController {
         return tmp;
     }
 
-    @Post("register")
+    @Post("signup")
     async register(@Body() registerDto : registerUserDto){
+        console.log(registerDto);
         return await this.authSer.register(registerDto);
     }
 

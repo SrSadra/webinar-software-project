@@ -65,10 +65,10 @@ async function bootstrap() {
   // Start all attached microservices
   await app.startAllMicroservices();
 
-  // app.enableCors({
-  //   origin: "http://localhost:5173",
-  //   credentials: true
-  // })
+  app.enableCors({
+    origin: "http://localhost:5173",
+    credentials: true
+  })
 
   // Start the gateway/API server
   await app.listen(10000);
