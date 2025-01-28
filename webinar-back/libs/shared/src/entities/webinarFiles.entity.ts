@@ -10,6 +10,6 @@ export class webinarFilesEntity{
     @Column()
     filePath: string;
 
-    @ManyToOne(type => EpisodeEntity, (webinarEpisode) => webinarEpisode.files)
+    @ManyToOne(type => EpisodeEntity, (webinarEpisode) => webinarEpisode.files, {onDelete: "CASCADE"})
     webinarEpisode: EpisodeEntity;
 }

@@ -1,4 +1,4 @@
-import { isNotEmpty, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
+import { IsEmail, isNotEmpty, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
 import { loginUserDto } from "./loginUser.dto";
 
 export class registerUserDto extends loginUserDto{
@@ -24,7 +24,7 @@ export class registerUserDto extends loginUserDto{
     phoneNumber: string; // ??
 
     @IsOptional()
-    whatsAppNumber: string; //??
+    whatsAppNumber?: string; //??
 
     //education: 
     

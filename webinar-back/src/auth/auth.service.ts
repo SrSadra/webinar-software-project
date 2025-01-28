@@ -22,6 +22,7 @@ export class AuthService {
     async login(user : Readonly<loginUserDto>){
         try{
           const {email, password } = user;
+          console.log(email,password);
 
           let foundedUser: ManagerEntity| userEntity = await this.findUserManager(email);
           console.log(foundedUser);
@@ -32,9 +33,10 @@ export class AuthService {
     
           delete foundedUser.password;
           const token = this.jwtSer.sign({user : foundedUser});
-          return token;
+          return {token , msg: ""};
         }catch (err){
           console.log(err);
+          return {token : null, msg: "Incorrect email or password"};
         }
       }
 
@@ -63,6 +65,10 @@ export class AuthService {
                 user = await this.userRep.save({
                 ...createUser,
                 password : hashed,
+              });
+              const profile = await this.profileRep.save({
+                user,
+                webinar: [],
               });
             }
 

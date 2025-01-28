@@ -7,17 +7,17 @@ export class TransactionEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     date: Date;
 
     @Column()
     price: number; //??
 
-    @ManyToOne(() => ProfileEntity, (profile) => profile.transaction)
+    @ManyToOne(() => ProfileEntity, (profile) => profile.transaction, {cascade: true})
     @JoinColumn()
     profile: ProfileEntity;
 
-    @ManyToOne(() => webinarEntity, (webinar) => webinar.transactions)
+    @ManyToOne(() => webinarEntity, (webinar) => webinar.transactions, {onUpdate: "CASCADE"})
     @JoinColumn()
     webinar: webinarEntity;
 }

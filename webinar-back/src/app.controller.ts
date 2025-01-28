@@ -6,8 +6,8 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
 
-  @Get('*') // will match any route that doesnt match other
-  handleNotFound() {
-    return '404 Not Found';
-  }
+  // @Get('*') // will match any route that doesnt match other
+  // handleNotFound() {
+  //   return '404 Not Found';
+  // }
 }

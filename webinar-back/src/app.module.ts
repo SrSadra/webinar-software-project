@@ -14,6 +14,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { EpisodeModule } from './episode/episode.module';
 import { SharedModule } from '@app/shared';
+import { PaymentModule } from './payment/payment.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -38,7 +40,13 @@ import { SharedModule } from '@app/shared';
     //     synchronize: true
     //   })
     // }),
+    // WebinarModule,
+    PaymentModule,
+
     WebinarModule,
+    EpisodeModule,
+    CategoryModule,
+    UserModule
   ],
   controllers: [AppController],
   providers: [AppService],

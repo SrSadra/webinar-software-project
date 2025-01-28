@@ -19,17 +19,20 @@ export class jwtStrategy extends PassportStrategy(Strategy,"jwt"){
         jwtFromRequest: 
         ExtractJwt.fromExtractors([
           (request: Request) => {
-            return request?.cookies.Authentication;
+            // console.log(request?.cooki);
+            console.log("cookoo", request.cookies);
+            
+            return request.cookies.Authentication?.token;
           },
           ExtractJwt.fromAuthHeaderAsBearerToken() // or use as bearer
         ]),
         ignoreExpiration: false,
         secretOrKey : configSer.get("JWT_SECRET")
-        })
-        
+        }) 
       }
     
     async validate(payload: any) { // we can check the token with db here or elsewhere. return is used like req.user by @req 
+      
       const payloadUser = payload.user;
       
       let isManager: userEntity | ManagerEntity = await this.managerRep.findOneByEmail(payloadUser.email);

@@ -9,13 +9,14 @@ import { MulterModule } from '@nestjs/platform-express';
 import { CloudinaryModule } from '@app/shared/cloudinary/cloudinary.module';
 import { webinarFilesEntity } from '@app/shared/entities/webinarFiles.entity';
 import { episodeFileRepository } from '@app/shared/interfaces/repos/episodeFile.repository';
+import { RabbitmqModule } from '@app/shared/rabbitmq.module';
 
 @Module({
   imports: [
     SharedModule,
     TypeOrmModule.forFeature([EpisodeEntity,webinarFilesEntity,webinarFilesEntity]), 
-    SharedModule.registerRmq("EPISODE_SERVICE", "episode_queue"),
-    CloudinaryModule
+    RabbitmqModule.registerRmq("EPISODE_SERVICE", "episode_queue"),
+    // CloudinaryModule
   ],
   providers: [EpisodeService, episodeRepository,episodeFileRepository],
   controllers: [EpisodeController]

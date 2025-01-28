@@ -1,4 +1,4 @@
-import { SharedService } from '@app/shared';
+import { RabbitmqService } from '@app/shared';
 import { newEpisodeDto } from '@app/shared/dtos/newEpisode.dto';
 import { webinarEntity } from '@app/shared/entities/webinar.entity';
 import { MultipleFilesInterceptor } from '@app/shared/interceptors/file.interceptor';
@@ -12,7 +12,7 @@ import { EpisodeService } from './episode.service';
 
 @Controller('webinar/:id') // ? 
 export class EpisodeController {
-    constructor(private episodeSer: EpisodeService, private sharedSer: SharedService,
+    constructor(private episodeSer: EpisodeService, private sharedSer: RabbitmqService,
         // @Inject("cloudinary") private cloudinaryConf: typeof Cloudinary
         ){}
 
@@ -32,6 +32,15 @@ export class EpisodeController {
     tst(@Ctx() context : RmqContext){
         console.log("trouble?");
     }
+
+    @MessagePattern({cmd: "find-webinar-episodes"})
+    async getWebinarEpisodes(@Ctx() context: RmqContext, @Payload() payload: {webinar: webinarEntity}){
+        console.log("we are here");
+        // this.sharedSer.ackMessage(context);
+        return await this.episodeSer.getWebinarEpisodes(payload.webinar);
+    }
+
+    
     
 
     

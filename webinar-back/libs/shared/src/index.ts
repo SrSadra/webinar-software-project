@@ -1,2 +1,2 @@
 export * from './shared.module';
-export * from './shared.service';
+export * from './rabbitmq.service';

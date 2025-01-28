@@ -7,12 +7,13 @@ export class RolesGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     // get the roles required
     const roles = this.reflector.getAllAndOverride<string[]>('roles', [context.getHandler(), context.getClass()]);
+    console.log("miad?");
     if (!roles) {
       throw new InternalServerErrorException("There is no roles specified!");
     }
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    console.log(roles);
+    console.log(user);
     if (roles.includes('manager')){
       if (!user.role){//is manager
         return true;

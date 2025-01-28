@@ -4,7 +4,7 @@ import { RmqContext, RmqOptions, Transport } from '@nestjs/microservices';
 import { SharedInterface } from './interfaces/shared.interface';
 
 @Injectable()
-export class SharedService implements SharedInterface{
+export class RabbitmqService implements SharedInterface{
     constructor(private readonly configSer : ConfigService){}
 
     getRmqOption(queue : string): RmqOptions {

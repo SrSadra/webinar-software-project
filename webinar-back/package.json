@@ -17,11 +17,12 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "start:app": "nest start --entryFile main.ts",
-    "start:user": "nest start --entryFile user/main.ts",
-    "start:category": "nest start --entryFile category/main.ts",
-    "start:episode": "nest start --entryFile episode/main.ts",
-    "start:all": "npm-run-all -p start:app start:user start:category start:episode"
+    "start:app": "nest start --preserveWatchOutput --watch --entryFile main.ts",
+    "start:user": "nest start --preserveWatchOutput --watch --entryFile user/main.ts",
+    "start:category": "nest start --preserveWatchOutput --watch --entryFile category/main.ts",
+    "start:episode": "nest start --preserveWatchOutput --watch --entryFile episode/main.ts",
+    "start:webinar": "nest start --preserveWatchOutput --watch --entryFile webinar/main.ts",
+    "start:all": "concurrently \"npm run start:user\" \"npm run start:category\" \"npm run start:episode\" \"npm run start:webinar\" \"npm run start:app\""
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -50,6 +51,7 @@
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
+    "slugify": "^1.6.6",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
@@ -67,7 +69,7 @@
     "@types/supertest": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "concurrently": "^9.1.0",
+    "concurrently": "^9.1.2",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",

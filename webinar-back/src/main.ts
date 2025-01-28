@@ -26,29 +26,29 @@ async function bootstrap() {
       // whitelist: true, // Strip unknown properties
   }))
 
-  // Attach Microservice 1 using RabbitMQ
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
-    options: {
-      urls: ['amqp://localhost:5672'], // RabbitMQ server URL
-      queue: 'category_queue',
-      queueOptions: {
-        durable: true,
-      },
-    },
-  });
+  // // Attach Microservice 1 using RabbitMQ
+  // app.connectMicroservice<MicroserviceOptions>({
+  //   transport: Transport.RMQ,
+  //   options: {
+  //     urls: ['amqp://localhost:5672'], // RabbitMQ server URL
+  //     queue: 'category_queue',
+  //     queueOptions: {
+  //       durable: true,
+  //     },
+  //   },
+  // });
 
-  // Attach Microservice 2 using RabbitMQ
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
-    options: {
-      urls: ['amqp://localhost:5672'],
-      queue: 'user_queue',
-      queueOptions: {
-        durable: true,
-      },
-    },
-  });
+  // // Attach Microservice 2 using RabbitMQ
+  // app.connectMicroservice<MicroserviceOptions>({
+  //   transport: Transport.RMQ,
+  //   options: {
+  //     urls: ['amqp://localhost:5672'],
+  //     queue: 'user_queue',
+  //     queueOptions: {
+  //       durable: true,
+  //     },
+  //   },
+  // });
 
     // // Attach Microservice 2 using RabbitMQ
     // app.connectMicroservice<MicroserviceOptions>({
@@ -64,6 +64,11 @@ async function bootstrap() {
 
   // Start all attached microservices
   await app.startAllMicroservices();
+
+  // app.enableCors({
+  //   origin: "http://localhost:5173",
+  //   credentials: true
+  // })
 
   // Start the gateway/API server
   await app.listen(10000);

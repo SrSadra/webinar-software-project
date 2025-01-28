@@ -12,12 +12,18 @@ export class AuthController {
 
     @Post("login")
     async login(@Body() loginDto : loginUserDto,@Res({passthrough: true}) res : Response){
-        const token = await this.authSer.login(loginDto);
-        res.cookie('Authentication', token, {
+        const tmp = await this.authSer.login(loginDto);
+        if (!tmp.token){
+            res.status(401)
+            return tmp;
+        }
+        console.log("token..." ,tmp);
+        res.cookie('Authentication', tmp, {
             httpOnly: true, // Prevents client-side scripts from accessing the cookie
             sameSite: 'strict', // Protect against CSRF
             maxAge: 24 * 60 * 60 * 1000, // Cookie expires in 1 day
         });
+        return tmp;
     }
 
     @Post("register")

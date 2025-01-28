@@ -7,7 +7,7 @@ export class WebinarCategoryEntity{
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({unique: true, name: "title"})
+    @Column({nullable: true})
     title: string;
 
     @OneToMany(() => SubCategoryEntity, (subcategory) => subcategory.category)
@@ -16,6 +16,6 @@ export class WebinarCategoryEntity{
     @Column({default: true})
     isActive: boolean;
 
-    @OneToMany(() => webinarEntity, (webinar) => webinar.category)
+    @OneToMany(() => webinarEntity, (webinar) => webinar.category )
     webinar: webinarEntity[];
 }

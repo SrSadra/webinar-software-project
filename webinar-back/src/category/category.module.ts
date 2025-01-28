@@ -5,6 +5,7 @@ import { RolesGuard } from '@app/shared/guards/role.guard';
 import { categoryRepository } from '@app/shared/interfaces/repos/category.repository';
 import { subCategoryRepository } from '@app/shared/interfaces/repos/subcategory.repository';
 import { userRepository } from '@app/shared/interfaces/repos/user.repository';
+import { RabbitmqModule } from '@app/shared/rabbitmq.module';
 import { jwtStrategy } from '@app/shared/strategies/jwt.strategy';
 import { jwtAuthModule } from '@app/shared/strategies/jwtauth.module';
 import { Module } from '@nestjs/common';
@@ -20,7 +21,10 @@ import { CategoryService } from './category.service';
       SubCategoryEntity,
       WebinarCategoryEntity
     ]),
-    jwtAuthModule,SharedModule.registerRmq("CATEGORY_SERVICE", "category_queue")],
+    jwtAuthModule,
+    // RabbitmqModule
+    // .registerRmq("CATEGORY_SERVICE", "category_queue")
+  ],
   controllers: [CategoryController],
   providers: [CategoryService,
     // categoryRepository,

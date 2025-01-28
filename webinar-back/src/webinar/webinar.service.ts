@@ -3,17 +3,19 @@ import { newEpisodeDto } from '@app/shared/dtos/newEpisode.dto';
 import { newTeacherDto } from '@app/shared/dtos/newTeacher.dto';
 import { newWebinarDto } from '@app/shared/dtos/newWebinar.dto';
 import { updateWebinarDto } from '@app/shared/dtos/updateWebinar.dto';
+import { EpisodeEntity } from '@app/shared/entities/episode.entity';
 import { ProfileEntity } from '@app/shared/entities/profile.entity';
 import { SubCategoryEntity } from '@app/shared/entities/subCategory.entity';
 import { webinarEntity } from '@app/shared/entities/webinar.entity';
 import { WebinarCategoryEntity } from '@app/shared/entities/webinarCategory.entity';
+import { webinarStatus } from '@app/shared/enums/webinarStatus.enum';
 import { MulterFile } from '@app/shared/interfaces/multer.interface';
 import { webinarRepository } from '@app/shared/interfaces/repos/webinar.repository';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
 import { Request } from 'express';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, timeout } from 'rxjs';
 import { In } from 'typeorm';
 
 @Injectable()
@@ -33,28 +35,33 @@ export class WebinarService {
 
         const {categoryName, subCategoryNames} = createDto;
         console.log(categoryName);
-        const $ob = this.categorySer.send<WebinarCategoryEntity>({cmd: "find-category-by-title"}, {title: categoryName});
-        const category = await firstValueFrom($ob).catch((err) => console.log(err));
-        console.log(category);
+        const $ob = this.categorySer.send<WebinarCategoryEntity[]>({cmd: "find-category-by-title"}, {title: categoryName});
+        const category: WebinarCategoryEntity[] | void = await firstValueFrom($ob).catch((err) => console.log(err));
         if (!category){
             throw new NotFoundException("Category name not found!");
         }
+        const foundedCategory = category[0];
         const $ob2 = this.categorySer.send<SubCategoryEntity[]>({cmd:"find-all-sub-by-title" }, {subcategories: subCategoryNames});
         let subcategories = await firstValueFrom($ob2).catch((err) => console.log(err));
         if (!subcategories){
             subcategories = [];
         }
         const invitationLink = this.createWebinarLink();
+        console.log("title", foundedCategory);
         const uploadedFile = await this.cloudinarySer.uploadFile(file,`webinarcover/${createDto.englishTitle}`);
         console.log(invitationLink);
         const webinar = this.webinarRep.create({
             ...createDto,
-            category,
+            category: foundedCategory,
             subcategories, 
             invitationLink,
             image: uploadedFile.url,
             creator: manager,
+            transactions: [],
+            participants: [],
+            episodes: []
         });
+        console.log(webinar);
         await this.webinarRep.save(webinar);
     }
 
@@ -158,6 +165,79 @@ export class WebinarService {
             console.log(err);
             throw new err;
         }
-
       }
+
+
+      async searchWebinar(status? : webinarStatus, onlyDoctor?: boolean,title? : string ,category?: string){
+        const queryBuilder = this.webinarRep.createquerybuilder('webinar');
+
+        // Filter by status
+        if (status) {
+        queryBuilder.andWhere('webinar.status = :status', { status });
+        }
+        // Filter by onlyDoctor flag
+        if (onlyDoctor != null) {
+        queryBuilder.andWhere('webinar.onlyDoctor = :onlyDoctor', {onlyDoctor});
+        console.log(onlyDoctor);
+        }
+
+        // Filter by title (partial match)
+        if (title) {
+        queryBuilder.andWhere('webinar.englishTitle LIKE :title', { title: `%${title}%` });
+        }
+
+        // Filter by categories (many-to-many relation assumed)
+        // if (categories && categories.length > 0) {
+        if (category){
+        queryBuilder
+            .leftJoin('webinar.category', 'categories')
+            .andWhere('categories.title = :category', { category });
+        }
+        console.log("alo");
+        // Execute query and return results
+        return await queryBuilder.getMany();
+      }
+
+      async getWebinar(title: string){
+        const webinar = await this.webinarRep.getExactWebinarSafe(title);
+        if (!webinar){
+            throw new NotFoundException("No webinar founded");
+        }
+        console.log(webinar);
+        const $ob = this.episodeSer.send<EpisodeEntity[]>({cmd: "find-webinar-episodes"}, {webinar}).pipe(timeout(10000)); // Timeout after 5 seconds
+        let episodes: EpisodeEntity[] = await firstValueFrom($ob).catch((err) => err);
+        console.log(episodes);
+        if (!episodes){
+            episodes = [];
+        }
+        return {webinar, episodes};
+      }
+
+      async getWebinarBySlug(slug: string){
+        const webinar = await this.webinarRep.getWebinarForPurchase(slug);
+        if (!webinar){
+            throw new NotFoundException("No webinar founded");
+        }
+        return webinar
+      }
+
+      async addParticipantWebinar(id: number, profile: ProfileEntity){
+        const webinar = await this.webinarRep.findByCondition({
+            where: {id},
+            relations : ["participants"]
+        })
+        if (!webinar){
+            throw new NotFoundException("No webinar founded");
+        }
+        console.log("webinar here" , webinar);
+        webinar.participants.push(profile);
+        await this.webinarRep.save(webinar);
+        return webinar;
+      }
+
+
+      
+
+
+
 }   

@@ -1,4 +1,4 @@
-import { SharedService } from "@app/shared";
+import { RabbitmqService } from "@app/shared";
 import { NestFactory } from "@nestjs/core";
 import { MicroserviceOptions, Transport } from "@nestjs/microservices";
 import { AppModule } from "src/app.module";
@@ -7,16 +7,7 @@ import { EpisodeModule } from "./episode.module";
 
 
 async function bootstrap() {
-  // Create the HTTP server
-  const app = await NestFactory.create(EpisodeModule);
-
-  // Enable HTTP server to listen on a specific port
-  const PORT = 3009;
-  await app.listen(PORT);
-  console.log(`HTTP server is listening on http://localhost:${PORT}`);
-
-  // Create and start the microservice
-  const microservice = app.connectMicroservice<MicroserviceOptions>({
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(EpisodeModule, { // change appmodule?!
     transport: Transport.RMQ,
     options: {
       urls: ['amqp://localhost:5672'],
@@ -26,9 +17,34 @@ async function bootstrap() {
       },
     },
   });
-
-  await app.startAllMicroservices();
-  console.log('Microservice is listening on RabbitMQ');
+  console.log("alooo");
+  
+  await app.listen();
+  console.log('Microservice 3 is listening to microservice1_queue');
 }
 
 bootstrap();
+
+
+// async function bootstrap() {
+//   const app = await NestFactory.create(EpisodeModule);
+
+//   // const sharedSer = app.get(SharedService); // in main we use this structure to get services
+
+  
+//   app.connectMicroservice<MicroserviceOptions>(
+//     {transport: Transport.RMQ,
+//     options: {
+//       urls: ['amqp://localhost:5672'],
+//       queue: 'episode_queue',
+//       queueOptions: {
+//         durable: true,
+//       },
+//     },
+//   });
+//   await app.startAllMicroservices();
+
+//   await app.listen(3002); // this is hybrid microservice so it recieves http req and also have connection with other micros
+//   console.log("microservoce running port 3002");
+// }
+// bootstrap();

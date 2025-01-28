@@ -16,11 +16,10 @@ export class EpisodeEntity {
     @Column()
     endTime: Date;
 
-    @ManyToOne(type => webinarEntity, (webinar) => webinar.episodes)
+    @ManyToOne(type => webinarEntity, (webinar) => webinar.episodes,{onDelete: "CASCADE", onUpdate: "CASCADE"})
     webinar: webinarEntity;
 
     @OneToMany(type => webinarFilesEntity, (file) => file.webinarEpisode)
     files: webinarFilesEntity[]
-
 
 }

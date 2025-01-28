@@ -1,4 +1,4 @@
-import { SharedService } from '@app/shared';
+import { RabbitmqService } from '@app/shared';
 import { CloudinaryService } from '@app/shared/cloudinary/cloudinary.service';
 import { newEpisodeDto } from '@app/shared/dtos/newEpisode.dto';
 import { webinarEntity } from '@app/shared/entities/webinar.entity';
@@ -48,6 +48,12 @@ export class EpisodeService {
             console.log(err);
             throw new InternalServerErrorException(err);
         }
+    }
 
+    async getWebinarEpisodes(webinar: webinarEntity){
+        // console.log("web" , webinar);
+        const tmp = await this.episodeRep.findByCondition({where: {webinar: {englishTitle: webinar.englishTitle,persianTitle: webinar.persianTitle}}});
+        // console.log(tmp);
+        return tmp;
     }
 }

@@ -9,7 +9,7 @@ import { In } from 'typeorm';
 
 @Injectable()
 export class CategoryService {
-    constructor(@Inject("CATEGORY_REPOSITORY") private readonly categoryRep : categoryRepository,@Inject("SUBCATEGORY_REPOSITORY") private readonly subCategoryRep: subCategoryRepository ,){}
+    constructor(@Inject("CATEGORY_REPOSITORY") private readonly categoryRep : categoryRepository,@Inject("SUBCATEGORY_REPOSITORY") private readonly subCategoryRep: subCategoryRepository){}
 
     async updateCategory(id: number, dto: updateCategoryDto): Promise<WebinarCategoryEntity> {
         const category = await this.categoryRep.findByCondition({
@@ -54,25 +54,26 @@ export class CategoryService {
 
     async createCategory(newCategory : newCategoryDto){
         const {subCategory, title} = newCategory
-        console.log("existed");
         const existed = await this.categoryRep.findByCondition({
             where : {title}
         });
-        console.log("existed");
         if (existed){
             throw new ConflictException("Category already exist!");
         }
+        console.log(existed);
+        
         const category = this.categoryRep.create({
             title,
-            webinar : []
+            // webinar : []
         });
+        const createdCategory = await this.categoryRep.save(category);
         if (subCategory){
             subCategory.forEach(async (el) => {
                 const newSubCat = this.subCategoryRep.create({title: el, category : category});
                 await this.subCategoryRep.save(newSubCat);
             })
         }
-        return this.categoryRep.save(category);
+        return createdCategory;
     }
 
     async searchCategory(title?: string, isActive? : boolean){
@@ -83,7 +84,7 @@ export class CategoryService {
             return await this.categoryRep.findCategoryByActivate(isActive);
         }
         else{
-            throw new NotFoundException("No webinar has found!");
+            throw new NotFoundException("No category has founded!");
         }
     }
 

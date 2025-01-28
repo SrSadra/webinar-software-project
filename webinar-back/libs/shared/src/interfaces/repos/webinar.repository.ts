@@ -1,4 +1,6 @@
+import { FilterWebinarDto } from "@app/shared/dtos/filterwebinar.dto";
 import { webinarEntity } from "@app/shared/entities/webinar.entity";
+import { DateFilter } from "@app/shared/enums/dateFilter.enum";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -13,4 +15,39 @@ export class webinarRepository extends BaseAbstractRepository<webinarEntity> {
     public async findById(id: number): Promise<webinarEntity>{
         return await this.webinarRep.findOneBy({id});
     }
+
+    public createquerybuilder(alisis: string){
+        return this.webinarRep.createQueryBuilder(alisis);
+    }
+
+    // async findWebinarByIdRelation(id: number, relation? : string){
+    //   return await this.webinarRep.findOne({
+        
+    //   })
+    // }
+
+    public async getExactWebinarSafe(title: string){
+        return await this.webinarRep
+      .createQueryBuilder('webinar')
+      .select([
+        'webinar.persianTitle',
+        'webinar.englishTitle',
+        'webinar.status',
+        'webinar.description',
+        'webinar.image',
+        'webinar.price',
+        'webinar.discountPercent',
+        'webinar.onlyDoctor',
+      ])
+      .where('webinar.englishTitle = :title', { title: `${title}` }).getOne();
+    }
+
+    async getWebinarForPurchase(slug: string){
+        return await this.webinarRep.findOne({
+            where: { slug },
+            select: ['englishTitle', 'persianTitle', 'price','image', 'discountPercent', "id" ], 
+          });
+    }
+
+
 }

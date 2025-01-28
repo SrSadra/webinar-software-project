@@ -31,8 +31,8 @@ export class userEntity {
     @Column({nullable: true})
     whatsAppNumber: string; //??
 
-    @Column({default: Roles.USER,enum: UserRoles})
-    role: "user" | "doctor"
+    @Column({default: Roles.USER,enum: UserRoles, type: "enum"})
+    role: UserRoles
 
     @OneToOne(() => ProfileEntity, (profile) => profile.user)
     profile: ProfileEntity;

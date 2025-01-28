@@ -24,6 +24,7 @@ export class newWebinarDto {
 
     @IsNumber()
     @IsOptional()
+    @Transform(({ value }) => Number(value))
     discountPercent?: number;
 
     // invitationLink: string;

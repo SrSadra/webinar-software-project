@@ -6,7 +6,7 @@ import { BaseAbstractRepository } from "../base/base.abstract.repository";
 
 // @Injectable()
 export class subCategoryRepository extends BaseAbstractRepository<SubCategoryEntity> {
-    constructor(@InjectRepository(SubCategoryEntity) subCategoryRep : Repository<SubCategoryEntity>){
+    constructor(@InjectRepository(SubCategoryEntity) private subCategoryRep : Repository<SubCategoryEntity>){
         super(subCategoryRep);
     }
 }
