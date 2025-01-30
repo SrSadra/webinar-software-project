@@ -6,16 +6,15 @@ const tokenName = "token";
 
 export async function signup(user, profile) {
   console.log("user" , user);
-  const body = new FormData();
-  // body.append("name", user.name);
-  body.append("email", user.email);
-  body.append("username", user.username);
-  body.append("firstname", user.firstname);
-  body.append("phoneNumber", user.phoneNumber);
-  body.append("password", user.password);
+  // const body = new FormData();
+  // // body.append("name", user.name);
+  // body.append("email", user.email);
+  // body.append("username", user.username);
+  // body.append("firstname", user.firstname);
+  // body.append("phoneNumber", user.phoneNumber);
+  // body.append("password", user.password);
 
   const { data } = await apiClient.post("/auth/signup", user);
-  // console.log(data);
 }
 
 export async function login(user) {
@@ -24,8 +23,19 @@ export async function login(user) {
   localStorage.setItem("tokenName", data.token);
 }
 
-export function logout() {
-  localStorage.removeItem("tokenName");
+export async function logout() {
+  try {
+    // Call the backend logout endpoint
+    await apiClient.post('/auth/logout');
+    
+    // Remove local storage items (optional)
+    localStorage.removeItem("tokenName");
+    // Redirect to homepage
+    // window.location = "/";
+  } catch (error) {
+    console.error('Logout failed:', error);
+  } finally {
+  }
 }
 
 export function getUser() {

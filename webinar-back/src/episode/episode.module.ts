@@ -10,15 +10,17 @@ import { CloudinaryModule } from '@app/shared/cloudinary/cloudinary.module';
 import { webinarFilesEntity } from '@app/shared/entities/webinarFiles.entity';
 import { episodeFileRepository } from '@app/shared/interfaces/repos/episodeFile.repository';
 import { RabbitmqModule } from '@app/shared/rabbitmq.module';
+import { CommentRepository } from '@app/shared/interfaces/repos/comment.repository';
+import { EpisodeComments } from '@app/shared/entities/episodeComment.entity';
 
 @Module({
   imports: [
     SharedModule,
-    TypeOrmModule.forFeature([EpisodeEntity,webinarFilesEntity,webinarFilesEntity]), 
+    TypeOrmModule.forFeature([EpisodeEntity,webinarFilesEntity,webinarFilesEntity, EpisodeComments]), 
     RabbitmqModule.registerRmq("EPISODE_SERVICE", "episode_queue"),
     // CloudinaryModule
   ],
-  providers: [EpisodeService, episodeRepository,episodeFileRepository],
+  providers: [EpisodeService, episodeRepository,episodeFileRepository,CommentRepository],
   controllers: [EpisodeController]
 })
 export class EpisodeModule {}
