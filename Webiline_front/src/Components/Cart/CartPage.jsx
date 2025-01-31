@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { useEffect } from "react";
-=======
 import React, { memo, useContext, useMemo } from "react";
->>>>>>> master
 
 import UserContext from "../../contexts/UserContext";
 import "./CartPage.css";
@@ -13,18 +9,6 @@ import CartContext from "../../contexts/CartContext";
 import { checkoutAPI } from "../../services/orderServices";
 import { toast } from "react-toastify";
 
-<<<<<<< HEAD
-const CartPage = ({ cart }) => {
-  const [subTotal, setSubTotal] = useState(0);
-
-  useEffect(() => {
-    let total = 0;
-    cart.forEach((item) => {
-      total += item.product.price * item.quantitiy;
-    });
-  }, [cart]);
-
-=======
 const CartPage = () => {
   const user = useContext(UserContext);
   const { cart, removeFromCart, updateCart, setCart } = useContext(CartContext);
@@ -51,7 +35,6 @@ const CartPage = () => {
       });
   };
 
->>>>>>> master
   return (
     <section className="align_center cart_page">
       <div className="align_center user_info">
@@ -67,23 +50,12 @@ const CartPage = () => {
 
       <Table headings={["Item", "Price", "Quantity", "Total", "Remove"]}>
         <tbody>
-<<<<<<< HEAD
-          {cart.map(({ product, quantitiy }) => (
-=======
           {cart.map(({ product, quantity }) => (
->>>>>>> master
             <tr key={product._id}>
               <td>{product.title}</td>
               <td>${product.price}</td>
               <td className="align_center table_quantity_input">
                 <QuantityInput
-<<<<<<< HEAD
-                  quantity={quantitiy}
-                  stock={product.stock}
-                ></QuantityInput>
-              </td>
-              <td>${quantitiy * product.price}</td>
-=======
                   quantity={quantity}
                   stock={product.stock}
                   setQuantity={updateCart}
@@ -92,16 +64,12 @@ const CartPage = () => {
                 />
               </td>
               <td>${quantity * product.price}</td>
->>>>>>> master
               <td>
                 <img
                   src={remove}
                   alt="remove icon"
                   className="cart_remove_icon"
-<<<<<<< HEAD
-=======
                   onClick={() => removeFromCart(product._id)}
->>>>>>> master
                 />
               </td>
             </tr>

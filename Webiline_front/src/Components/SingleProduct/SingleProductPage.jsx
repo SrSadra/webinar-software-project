@@ -52,21 +52,6 @@ const SingleProductPage = ({ addToCart }) => {
             <h1 className="single_product_title">{product.title}</h1>
             <p className="single_product_description">{product.description}</p>
             <p className="single_product_price">${product.price.toFixed(2)}</p>
-<<<<<<< HEAD
-            <h2 className="quantity_title">Quantity</h2>
-            <div className="align_center quantity_input"></div>
-            <QuantityInput
-              quantity={quantity}
-              setQuantity={setQuantity}
-              stock={product.stock}
-            ></QuantityInput>
-            <button
-              className="search_button add_card"
-              onClick={() => addToCart(product, quantity)}
-            >
-              Add to Cart
-            </button>
-=======
 
             {user && (
               <>
@@ -87,7 +72,6 @@ const SingleProductPage = ({ addToCart }) => {
                 </button>
               </>
             )}
->>>>>>> master
           </div>
         </>
       )}
