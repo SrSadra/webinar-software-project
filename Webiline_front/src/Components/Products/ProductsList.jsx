@@ -1,36 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./ProductsList.css";
 import ProductCard from "./ProductCard";
 import useData from "../../hooks/useData";
 import ProductCardSkeleton from "./ProductCardSkeleton";
 import { useSearchParams } from "react-router-dom";
-import { Pagination } from "../Common/Pagination";
+import Pagination from "../Common/Pagination";
+import useProductList from "../../hooks/useProductList";
 
 const ProductsList = () => {
-  const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState("");
+  const [sortedProducts, setSortedProducts] = useState([]);
+
   const [search, setSearch] = useSearchParams();
   const category = search.get("category");
+  const searchQuery = search.get("search");
 
-  const { data, error, isLoading } = useData(
-    "/products",
-    {
-      params: {
-        category,
-        perpage: 10,
-        page,
-      },
-    },
-    [category, page]
-  );
+  const { data, error, isFetching, hasNextPage, fetchNextPage } =
+    useProductList({
+      title: searchQuery,
+      category,
+      // perPage: 10,
+    });
 
-  useEffect(() => {
-    setPage(1);
-  }, [category]);
+  console.log(data);
+
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8];
 
   const handlePageChange = (page) => {
     const currentParams = Object.fromEntries([...search]);
+
     setSearch({ ...currentParams, page: parseInt(currentParams.page) + 1 });
   };
 
@@ -40,23 +39,52 @@ const ProductsList = () => {
         document.documentElement;
       if (
         scrollTop + clientHeight >= scrollHeight - 1 &&
-        !isLoading &&
-        data &&
-        page < data.totalPages
+        !isFetching &&
+        hasNextPage &&
+        data
       ) {
-        setPage((prev) => prev + 1);
+        console.log("Reached to Bottom!");
+        fetchNextPage();
       }
     };
+
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [data, isLoading]);
+  }, [data, isFetching]);
+
+  useEffect(() => {
+    if (data && data.pages) {
+      const products = data.pages.flatMap((page) => page.products);
+
+      if (sortBy === "price desc") {
+        setSortedProducts(products.sort((a, b) => b.price - a.price));
+      } else if (sortBy === "price asc") {
+        setSortedProducts(products.sort((a, b) => a.price - b.price));
+      } else if (sortBy === "rate desc") {
+        setSortedProducts(
+          products.sort((a, b) => b.reviews.rate - a.reviews.rate)
+        );
+      } else if (sortBy === "rate asc") {
+        setSortedProducts(
+          products.sort((a, b) => a.reviews.rate - b.reviews.rate)
+        );
+      } else {
+        setSortedProducts(products);
+      }
+    }
+  }, [sortBy, data]);
 
   return (
     <section className="products_list_section">
       <header className="align_center products_list_header">
         <h2>Products</h2>
-        <select name="sort" id="" className="products_sorting">
+        <select
+          name="sort"
+          id=""
+          className="products_sorting"
+          onChange={(e) => setSortBy(e.target.value)}
+        >
           <option value="">Relevance</option>
           <option value="price desc">Price HIGH to LOW</option>
           <option value="price asc">Price LOW to HIGH</option>
@@ -67,32 +95,11 @@ const ProductsList = () => {
 
       <div className="products_list">
         {error && <em className="form_error">{error}</em>}
-        {data?.products &&
-          data.products.map((product) => (
-            <ProductCard
-              key={product._id}
-              id={product._id}
-              image={product.images[0]}
-              price={product.price}
-              title={product.title}
-              rating={product.reviews.rate}
-              ratingCounts={product.reviews.counts}
-              stock={product.stock}
-            ></ProductCard>
-          ))}
-        {isLoading &&
-          skeletons.map((n) => (
-            <ProductCardSkeleton key={n}></ProductCardSkeleton>
-          ))}
+        {sortedProducts.map((product) => (
+          <ProductCard key={product._id} product={product} />
+        ))}
+        {isFetching && skeletons.map((n) => <ProductCardSkeleton key={n} />)}
       </div>
-      {/* {data && (
-        <Pagination
-          totalPost={data.totalProducts}
-          postsPerPage={8}
-          onClick={handlePageChange}
-          currentPage={page}
-        ></Pagination>
-      )} */}
     </section>
   );
 };

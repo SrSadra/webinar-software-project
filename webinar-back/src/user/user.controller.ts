@@ -1,7 +1,11 @@
 import { changePassDto } from '@app/shared/dtos/change-pass.dto';
+import { userEntity } from '@app/shared/entities/user.entity';
+import { jwtGuard } from '@app/shared/guards/jwt.guard';
+import { MulterFile } from '@app/shared/interfaces/multer.interface';
 import { UserRequest } from '@app/shared/interfaces/user-request.interface';
-import { Body, Controller, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Put, Req, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
 import { UserService } from './user.service';
 
@@ -16,13 +20,17 @@ export class UserController {
     //     return await this.userSer.changePass(req.user.username,passDto.oldPass,passDto.newPass);
     // }
 
-    // @UseGuards(jwtGuard)
+    @Post("upload-document")
+    @UseInterceptors(FilesInterceptor("userDocument", 3)) // userFiles name shoud match with html name attr // how to make it globally
+    async uploadDocment(@Body() titles : string[], @UploadedFiles() files : MulterFile[], @Req() req : UserRequest){
+        await this.userSer.uploadUserDocument(titles, files,req.user.username);
+    }
+
+    @UseGuards(jwtGuard)
     @Post("certificate")
-    sendDoctorCertificate(@Body() medicalNumber: number, @Req() req: UserRequest){
-        return "mamad";
-        // check w scrapin
-        // check if already doctor
-        // send to manager
+    async sendDoctorCertificate(@Body("medicalNumber") medicalNumber: number, @Req() req: UserRequest){
+        await this.userSer.validateMedicalNumber(medicalNumber);
+        return true;
     }
 
 

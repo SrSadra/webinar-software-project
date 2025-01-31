@@ -7,6 +7,9 @@ export class CertificateEntity {
     id: number;
 
     @Column()
+    title: string;
+
+    @Column()
     imageLink: string;
 
     @ManyToOne(() => ProfileEntity, (profile) => profile.certificates)

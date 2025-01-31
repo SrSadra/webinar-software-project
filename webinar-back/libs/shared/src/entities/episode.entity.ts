@@ -1,4 +1,5 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { EpisodeComments } from "./episodeComment.entity";
 import { webinarEntity } from "./webinar.entity";
 import { webinarFilesEntity } from "./webinarFiles.entity";
 
@@ -21,5 +22,8 @@ export class EpisodeEntity {
 
     @OneToMany(type => webinarFilesEntity, (file) => file.webinarEpisode)
     files: webinarFilesEntity[]
+
+    @OneToMany(type => EpisodeComments, (comment) => comment.episode)
+    comments: EpisodeComments[];
 
 }

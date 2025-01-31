@@ -10,3 +10,11 @@ export function slugify(text: string){
     .replace(/\s+/g, '-') // Replace spaces with hyphens
     .toLowerCase(); // Convert to lowercase
 }
+
+export function containsInappropriateWords(comment: string): boolean {
+    const inappropriateWords = [
+        "fuck", "binamous", "kachal"
+    ]; 
+    const lowerCasedComment = comment.toLowerCase();
+    return inappropriateWords.some(word => lowerCasedComment.includes(word));
+}

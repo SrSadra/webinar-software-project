@@ -2,7 +2,8 @@ import { forgetPassDto } from '@app/shared/dtos/forget-pass.dto';
 import { loginUserDto } from '@app/shared/dtos/loginUser.dto';
 import { newPasswordDto } from '@app/shared/dtos/new-pass.dto';
 import { registerUserDto } from '@app/shared/dtos/registerUser.dto';
-import { Body, Controller, Post, Put, Query, Res } from '@nestjs/common';
+import { jwtGuard } from '@app/shared/guards/jwt.guard';
+import { Body, Controller, HttpStatus, Post, Put, Query, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 
@@ -13,11 +14,11 @@ export class AuthController {
     @Post("login")
     async login(@Body() loginDto : loginUserDto,@Res({passthrough: true}) res : Response){
         const tmp = await this.authSer.login(loginDto);
+        console.log("token..." ,tmp);
         if (!tmp.token){
             res.status(401)
             return tmp;
         }
-        console.log("token..." ,tmp);
         res.cookie('Authentication', tmp, {
             httpOnly: true, // Prevents client-side scripts from accessing the cookie
             sameSite: 'strict', // Protect against CSRF
@@ -26,8 +27,9 @@ export class AuthController {
         return tmp;
     }
 
-    @Post("register")
+    @Post("signup")
     async register(@Body() registerDto : registerUserDto){
+        console.log(registerDto);
         return await this.authSer.register(registerDto);
     }
 
@@ -39,5 +41,17 @@ export class AuthController {
     @Post("forget-password")
     async forgetPass(@Body() email: forgetPassDto){
         return await this.authSer.forgotPassword(email);
+    }
+
+    // @UseGuards(jwtGuard)
+    @Post("logout")
+    logout(@Res() res : Response){
+    res.clearCookie('jwt', {
+        httpOnly: true, // Critical for security (client-side JS can't access)
+        // secure: true,
+        sameSite: 'strict',
+      });
+      console.log("budim?");
+      return res.status(HttpStatus.OK).json({ message: 'Logged out successfully' });
     }
 }

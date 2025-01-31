@@ -4,6 +4,7 @@ import { userEntity } from "./user.entity";
 import { webinarEntity } from "./webinar.entity";
 import { TransactionEntity } from './transaction.entity';
 import { GraduationStatus } from '../enums/graduationStatus.enum';
+import { EpisodeComments } from './episodeComment.entity';
 
 @Entity("profile")
 export class ProfileEntity {
@@ -30,4 +31,7 @@ export class ProfileEntity {
 
     @OneToMany(() => TransactionEntity, (transaction) => transaction.profile)
     transaction: TransactionEntity[];
+
+    @OneToMany(() => EpisodeComments, (comments) => comments.author)
+    comments: EpisodeComments[];
 }

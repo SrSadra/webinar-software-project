@@ -1,6 +1,7 @@
 import { DataSource, DataSourceOptions } from "typeorm";
 import { CertificateEntity } from "../entities/certificate.entity";
 import { EpisodeEntity } from "../entities/episode.entity";
+import { EpisodeComments } from "../entities/episodeComment.entity";
 import { ManagerEntity } from "../entities/manager.entity";
 import { ProfileEntity } from "../entities/profile.entity";
 import { SubCategoryEntity } from "../entities/subCategory.entity";
@@ -20,7 +21,7 @@ export const dataSourceOption : DataSourceOptions = {
     database : "nestjs",
     // host : process.env.
     // url : "jdbc:mysql://root:3306/nestjs",
-    entities : [userEntity,CertificateEntity,EpisodeEntity,ManagerEntity,ProfileEntity,TransactionEntity,webinarEntity,WebinarCategoryEntity,webinarFilesEntity,SubCategoryEntity],
+    entities : [userEntity,CertificateEntity,EpisodeEntity,ManagerEntity,ProfileEntity,TransactionEntity,webinarEntity,WebinarCategoryEntity,webinarFilesEntity,SubCategoryEntity,EpisodeComments],
     migrations : ['dist/apps/auth/db/migrations/*.js']
 }
 
