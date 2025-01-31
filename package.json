@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@tanstack/react-query": "^5.65.1",
     "react-toastify": "^11.0.3"
   }
 }

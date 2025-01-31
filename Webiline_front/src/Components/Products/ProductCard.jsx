@@ -1,7 +1,7 @@
 import React, { memo, useContext } from "react";
 
 import "./ProductCard.css";
-import config from "../../config.json";
+//import config from "../../config.json";
 import star from "../../assets/white-star.png";
 import basket from "../../assets/basket.png";
 import { NavLink } from "react-router-dom";
