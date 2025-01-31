@@ -1,4 +1,4 @@
 .app {
-  display: grid;
-  grid-template-rows: 80px auto;
+    display: grid;
+    grid-template-rows: 80px auto;
 }

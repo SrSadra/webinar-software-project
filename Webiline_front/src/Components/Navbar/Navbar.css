@@ -1,63 +1,92 @@
 .navbar {
-  justify-content: space-between;
-  padding: 0 40px;
-  background-color: white;
+    justify-content: space-between;
+    padding: 0 40px;
+    background-color: #fff;
 }
 
 .navbar_heading {
-  margin-right: 20px;
-  font-size: 32px;
+    margin-right: 20px;
+    font-size: 32px;
 }
 
 .navbar_form {
-  width: 450px;
-  height: 40px;
-  border: 1px solid #cdcdcd;
-  border-radius: 5px;
-  padding: 3px;
+    width: 450px;
+    height: 40px;
+    border: 1px solid #cdcdcd;
+    border-radius: 5px;
+    padding: 3px;
+    position: relative;
 }
 
 .navbar_search {
-  flex: 1;
-  height: 100%;
-  padding: 0 7px;
-  font-size: 20px;
-  font-weight: 500;
-  border: none;
-  outline: none;
+    flex: 1;
+    height: 100%;
+    padding: 0 7px;
+    font-size: 20px;
+    font-weight: 500;
+    border: none;
+    outline: none;
 }
 
 .search_button {
-  height: 100%;
-  padding: 0 10px;
-  font-size: 20px;
-  font-weight: 500;
-  border: none;
-  border-radius: 5px;
-  background-color: #6457f9;
-  color: #fff;
-  cursor: pointer;
+    height: 100%;
+    padding: 0 10px;
+    font-size: 20px;
+    font-weight: 500;
+    border: none;
+    border-radius: 5px;
+    background-color: #6457f9;
+    color: #fff;
+    cursor: pointer;
+}
+
+.search_result {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    margin-top: 10px;
+    border: 1px solid #cdcdcd;
+    border-radius: 5px;
+    background-color: #fff;
+    z-index: 9999;
+}
+
+.search_suggestion_link {
+    display: flex;
+}
+
+.search_suggestion_link > a {
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.search_suggestion_link:hover,
+.search_suggestion_link.active {
+    background-color: #e3e3e3;
 }
 
 .navbar_links {
-  font-size: 20px;
+    font-size: 20px;
 }
 
 .navbar_links > a {
-  margin: 15px;
+    margin: 15px;
 }
 
 .navbar_links > a.active {
-  font-weight: 600;
+    font-weight: 600;
 }
 
 .cart_counts {
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 100%;
-  background-color: #6457f9;
-  color: #fff;
-  font-size: 15px;
-  margin-left: 5px;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background-color: #6457f9;
+    color: #fff;
+    font-size: 15px;
+    margin-left: 5px;
 }

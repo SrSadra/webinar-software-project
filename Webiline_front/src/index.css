@@ -1,26 +1,26 @@
-@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Rubik", serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
 }
 
 body {
-  font-size: 16px;
-  background-color: #f6f8fa;
+    font-size: 16px;
+    background-color: #f6f8fa;
 }
 
 .align_center {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 a {
-  font-size: inherit;
-  font-weight: 500;
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
+    font-size: inherit;
+    font-weight: 500;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
 }
