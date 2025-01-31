@@ -18,9 +18,9 @@ const ProductsList = () => {
 
   const { data, error, isFetching, hasNextPage, fetchNextPage } =
     useProductList({
-      title: searchQuery,
+      search: searchQuery,
       category,
-      // perPage: 10,
+      perPage: 10,
     });
 
   console.log(data);

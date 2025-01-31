@@ -48,5 +48,9 @@ export function getUser() {
 }
 
 export function getJwt() {
+<<<<<<< HEAD
   return localStorage.getItem("tokenName");
+=======
+  return localStorage.getItem(tokenName);
+>>>>>>> master
 }

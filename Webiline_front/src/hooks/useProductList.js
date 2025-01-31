@@ -4,7 +4,7 @@ import apiClient from "../utils/api-client";
 const useProductList = (query) => {
   const fetchFunction = ({ pageParam = 1 }) =>
     apiClient
-      .get("/webinar/search-webinar", { params: { ...query, page: pageParam } })
+      .get("/products", { params: { ...query, page: pageParam } })
       .then((res) => res.data);
 
   return useInfiniteQuery({
