@@ -19,11 +19,11 @@ export class EpisodeComments {
     // @Column({ default: false }) 
     // isEdited: boolean; // Track if comment was modified
 
-    @ManyToOne(() => ProfileEntity, (profile) => profile.comments, { onDelete: "CASCADE" }) 
+    @ManyToOne(type => ProfileEntity, (profile) => profile.comments, { onDelete: "CASCADE" }) 
     @JoinColumn()
     author: ProfileEntity; // The user who wrote the comment
 
-    @ManyToOne(() => EpisodeEntity, (episode) => episode.comments, { onDelete: "CASCADE" }) 
+    @ManyToOne(type => EpisodeEntity, (episode) => episode.comments, { onDelete: "CASCADE" }) 
     @JoinColumn()
     episode: EpisodeEntity; // The episode being commented on
 

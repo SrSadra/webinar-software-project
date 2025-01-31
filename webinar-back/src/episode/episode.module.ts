@@ -18,6 +18,7 @@ import { EpisodeComments } from '@app/shared/entities/episodeComment.entity';
     SharedModule,
     TypeOrmModule.forFeature([EpisodeEntity,webinarFilesEntity,webinarFilesEntity, EpisodeComments]), 
     RabbitmqModule.registerRmq("EPISODE_SERVICE", "episode_queue"),
+    RabbitmqModule.registerRmq("USER_SERVICE", "user_queue"),
     // CloudinaryModule
   ],
   providers: [EpisodeService, episodeRepository,episodeFileRepository,CommentRepository],

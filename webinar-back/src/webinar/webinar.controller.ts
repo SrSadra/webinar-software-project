@@ -22,7 +22,8 @@ export class WebinarController {
     constructor(private readonly webinarSer : WebinarService){}
 
     @Get("search-webinar")
-    async searchWebinar(@Query("status") status? : webinarStatus, @Query("onlyDoctor") onlyDoctor?: boolean,@Query("title") title? : string ,@Query("category") category?: string){
+    async searchWebinar(@Query("status") status? : webinarStatus, @Query("onlyDoctor") onlyDoctor?: boolean,@Query("title") title? : string ,@Query("category") category?: string,@Query('page') page: number = 1){
+        console.log("tests");
         return await this.webinarSer.searchWebinar(status,onlyDoctor,title,category);
     }
 

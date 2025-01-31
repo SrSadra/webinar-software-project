@@ -1,5 +1,6 @@
 import { changePassDto } from '@app/shared/dtos/change-pass.dto';
 import { userEntity } from '@app/shared/entities/user.entity';
+import { jwtGuard } from '@app/shared/guards/jwt.guard';
 import { MulterFile } from '@app/shared/interfaces/multer.interface';
 import { UserRequest } from '@app/shared/interfaces/user-request.interface';
 import { Body, Controller, Post, Put, Req, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
@@ -25,13 +26,11 @@ export class UserController {
         await this.userSer.uploadUserDocument(titles, files,req.user.username);
     }
 
-    // @UseGuards(jwtGuard)
+    @UseGuards(jwtGuard)
     @Post("certificate")
-    sendDoctorCertificate(@Body() medicalNumber: number, @Req() req: UserRequest){
-        return "mamad";
-        // check w scrapin
-        // check if already doctor
-        // send to manager
+    async sendDoctorCertificate(@Body("medicalNumber") medicalNumber: number, @Req() req: UserRequest){
+        await this.userSer.validateMedicalNumber(medicalNumber);
+        return true;
     }
 
 
