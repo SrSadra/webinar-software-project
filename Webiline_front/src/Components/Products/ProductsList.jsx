@@ -83,7 +83,7 @@ const ProductsList = () => {
   return (
     <section className="products_list_section">
       <header className="align_center products_list_header">
-        <h2>Products</h2>
+        <h2>Webinars</h2>
         <select
           name="sort"
           id=""

@@ -1,29 +1,52 @@
 .products_list_section {
-    padding: 10px;
-    padding-left: 30px;
+  padding: 10px;
+  padding-left: 30px;
 }
 
 .products_list_header {
-    justify-content: space-between;
+  justify-content: space-between;
 }
 
 .products_list_header h2 {
-    font-size: 26px;
+  font-size: 26px;
 }
 
 .products_sorting {
-    font-size: 18px;
-    font-weight: 500;
-    font-family: inherit;
-    height: 35px;
-    padding: 0 5px;
-    border: none;
-    outline: none;
-    border-radius: 5px;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: inherit;
+  height: 35px;
+  padding: 0 5px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
 }
 
 .products_list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.edit_form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #f8f8f8;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.edit_form input,
+.edit_form textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.edit_form button {
+  padding: 5px 10px;
+  margin-right: 5px;
+  cursor: pointer;
 }

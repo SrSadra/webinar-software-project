@@ -1,6 +1,7 @@
 import React from "react";
 
 import "./ProductsSidebar.css";
+import bigdot from "../../assets/bigDot.png";
 import config from "../../config.json";
 import LinkWithIcon from "../Navbar/LinkWithIcon";
 import useData from "../../hooks/useData";
@@ -28,7 +29,7 @@ const ProductsSidebar = () => {
               id={category.id}
               title={category.title}
               link={`/products?category=${category.title}`}
-              // emoji={`${config.backendURL}/category/${category.image}`}
+              emoji={bigdot}
               sidebar={true}
             />
           ))}

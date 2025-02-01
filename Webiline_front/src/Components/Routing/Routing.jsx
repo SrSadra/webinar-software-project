@@ -10,6 +10,7 @@ import LoginPage from "../Authentication/LoginPage";
 import SignupPage from "../Authentication/SignupPage";
 import Logout from "../Authentication/Logout";
 import ProtectedRoute from "./ProtectedRoute";
+import Users from "../User/Users";
 
 const Routing = () => {
     return (
@@ -23,6 +24,7 @@ const Routing = () => {
                 <Route path='/cart' element={<CartPage />} />
                 <Route path='/myorders' element={<MyOrderPage />} />
                 <Route path='/logout' element={<Logout />} />
+                <Route path="/users" element={<Users></Users>} />
             </Route>
         </Routes>
     );

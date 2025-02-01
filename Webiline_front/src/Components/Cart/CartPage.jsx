@@ -8,10 +8,12 @@ import QuantityInput from "../SingleProduct/QuantityInput";
 import CartContext from "../../contexts/CartContext";
 import { checkoutAPI } from "../../services/orderServices";
 import { toast } from "react-toastify";
+import { QueryClient, useQueryClient } from "@tanstack/react-query";
 
 const CartPage = () => {
   const user = useContext(UserContext);
-  const { cart, removeFromCart, updateCart, setCart } = useContext(CartContext);
+  const { cart, removeFromCart, updateCart } = useContext(CartContext);
+  const queryClient = useQueryClient();
 
   const subTotal = useMemo(() => {
     let total = 0;
@@ -23,15 +25,28 @@ const CartPage = () => {
   }, [cart]);
 
   const checkout = () => {
-    const oldCart = [...cart];
-    setCart([]);
-    checkoutAPI()
+    if (cart.length === 0) {
+      toast.error("Your cart is empty!");
+      return;
+    }
+
+    const orderData = {
+      userId: user._id,
+      products: cart.map(({ product, quantity }) => ({
+        productId: product._id,
+        quantity,
+      })),
+      total: subTotal + 5, // Including shipping charge
+    };
+
+    checkoutAPI(orderData)
       .then(() => {
+        queryClient.invalidateQueries(["cart"]);
         toast.success("Order placed successfully!");
       })
-      .catch(() => {
-        toast.error("Something went wrong!");
-        setCart(oldCart);
+      .catch((error) => {
+        console.error("Checkout Error:", error.response?.data || error.message);
+        toast.error(error.response?.data?.message || "Something went wrong!");
       });
   };
 
@@ -39,7 +54,7 @@ const CartPage = () => {
     <section className="align_center cart_page">
       <div className="align_center user_info">
         <img
-          src={`http://localhost:10000/profile/${user?.profilePic}`}
+          src={`https://cartwish-backend-29v7.onrender.com/profile/${user?.profilePic}`}
           alt="user profile"
         />
         <div>
@@ -48,20 +63,23 @@ const CartPage = () => {
         </div>
       </div>
 
-      <Table headings={["Item", "Price", "Quantity", "Total", "Remove"]}>
+      <Table headings={["Item", "Price", "Participants", "Total", "Remove"]}>
         <tbody>
           {cart.map(({ product, quantity }) => (
             <tr key={product.id}>
               <td>{product.title}</td>
               <td>${product.price}</td>
               <td className="align_center table_quantity_input">
-                <QuantityInput
+                {/* <QuantityInput
                   quantity={quantity}
                   stock={product.stock}
                   setQuantity={updateCart}
                   cartPage={true}
                   productId={product.id}
                 />
+                  productId={product._id}
+                /> */}
+                <p>1 Participant</p>
               </td>
               <td>${quantity * product.price}</td>
               <td>

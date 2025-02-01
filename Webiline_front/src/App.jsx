@@ -22,6 +22,7 @@ const App = () => {
   // const [cart, dispatchCart] = useReducer(cartReducer, []);
   // const { data: cartData, refetch } = useData("/cart", null, ["cart"]);
 
+
   // const addToCartMutation = useAddToCart();
   // const removeFromCartMutation = useRemoveFromCart();
   // const updateCartMutation = useUpdateCart();
