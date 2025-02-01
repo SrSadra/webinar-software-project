@@ -38,6 +38,12 @@ export class CategoryController {
         return await this.categorySer.searchCategory(title,isActive);
     }
 
+    @Get("sidebar-categories")
+    async getSideBarCateries(){
+        const categories = await this.categorySer.getSideBarCategories();
+        return categories;
+    }
+
     @Get("test")
     test(){
         return "heehe";

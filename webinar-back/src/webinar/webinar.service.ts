@@ -11,7 +11,7 @@ import { WebinarCategoryEntity } from '@app/shared/entities/webinarCategory.enti
 import { webinarStatus } from '@app/shared/enums/webinarStatus.enum';
 import { MulterFile } from '@app/shared/interfaces/multer.interface';
 import { webinarRepository } from '@app/shared/interfaces/repos/webinar.repository';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientProxy } from '@nestjs/microservices';
 import { Request } from 'express';
@@ -168,35 +168,68 @@ export class WebinarService {
       }
 
 
-      async searchWebinar(status? : webinarStatus, onlyDoctor?: boolean,title? : string ,category?: string){
-        const queryBuilder = this.webinarRep.createquerybuilder('webinar');
-
+      async searchWebinar(
+        page: number = 1,
+        perPage: number = 8,
+        status?: string,
+        onlyDoctor?: boolean,
+        title?: string,
+        category?: string,
+      ) {
+        
+        const queryBuilder = this.webinarRep.createquerybuilder('webinars');
+    
         // Filter by status
         if (status) {
-        queryBuilder.andWhere('webinar.status = :status', { status });
+          queryBuilder.andWhere('webinars.status = :status', { status });
         }
+    
         // Filter by onlyDoctor flag
-        if (onlyDoctor != null) {
-        queryBuilder.andWhere('webinar.onlyDoctor = :onlyDoctor', {onlyDoctor});
-        console.log(onlyDoctor);
+        if (onlyDoctor !== undefined) {
+          console.log("only doctor",onlyDoctor);
+          
+          queryBuilder.andWhere('webinars.onlyDoctor = :onlyDoctor', { onlyDoctor });
         }
-
+    
         // Filter by title (partial match)
         if (title) {
-        queryBuilder.andWhere('webinar.englishTitle LIKE :title', { title: `%${title}%` });
+          queryBuilder.andWhere('webinars.englishTitle LIKE :title', { title: `%${title}%` });
         }
-
-        // Filter by categories (many-to-many relation assumed)
-        // if (categories && categories.length > 0) {
-        if (category){
-        queryBuilder
-            .leftJoin('webinar.category', 'categories')
-            .andWhere('categories.title = :category', { category });
+    
+        // Filter by category
+        if (category) {
+          try {
+            const $ob = this.categorySer.send<WebinarCategoryEntity>(
+              { cmd: "find-category-by-title" },
+              { title: category }
+            );
+            const categoryEntity = await firstValueFrom($ob);
+            
+            if (categoryEntity) {
+              queryBuilder.andWhere('webinars.categoryId = :categoryId', { categoryId: categoryEntity.id });
+            }
+          } catch (err) {
+            console.error("Category fetch error:", err);
+          }
         }
-        console.log("alo");
-        // Execute query and return results
-        return await queryBuilder.getMany();
+    
+        // Pagination
+        const totalWebinars = await queryBuilder.getCount();
+        queryBuilder.skip((page - 1) * perPage).take(perPage);
+    
+        const webinars = await queryBuilder.getMany();
+        const totalPages = Math.ceil(totalWebinars / perPage);
+        console.log(webinars);
+        
+        return {
+          webinars,
+          currentPage: page,
+          perPage,
+          totalWebinars,
+          totalPages,
+        };
       }
+    
 
       async getWebinar(title: string){
         const webinar = await this.webinarRep.getExactWebinarSafe(title);
@@ -236,8 +269,23 @@ export class WebinarService {
       }
 
 
+      async getFeaturedProducts(): Promise<webinarEntity[]> {
+        try {
+          return await this.webinarRep.findAll({
+            take: 3, // Limit the results to 3
+            order: { id: 'DESC' } // Optional: Order by newest first
+        });
+        } catch (error) {
+          console.error('Error fetching featured products:', error);
+          throw new InternalServerErrorException('Error fetching featured products');
+        }
+      }
+    
+    
+    }
+
       
 
 
 
-}   
+

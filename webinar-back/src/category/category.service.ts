@@ -88,6 +88,10 @@ export class CategoryService {
         }
     }
 
+    async getSideBarCategories(){
+        return await this.categoryRep.findAll({where : {isActive: true}});
+    }
+
     async findCategoryBytitle(title: string){
         return await this.categoryRep.findCategoriesByTitle(title);
     }
