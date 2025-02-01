@@ -13,7 +13,7 @@ const SingleProductPage = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
-  const { addToCart } = useContext(CartContext);
+  // const { addToCart } = useContext(CartContext);
   const user = useContext(UserContext);
 
   const { id } = useParams();
@@ -64,12 +64,12 @@ const SingleProductPage = () => {
                   />
                 </div>
 
-                <button
+                {/* <button
                   className="search_button add_cart"
                   onClick={() => addToCart(product, quantity)}
                 >
                   Add to Cart
-                </button>
+                </button> */}
               </>
             )}
           </div>

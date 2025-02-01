@@ -70,6 +70,8 @@ async function bootstrap() {
     credentials: true
   })
 
+  // app.setGlobalPrefix("api")
+
   // Start the gateway/API server
   await app.listen(10000);
   console.log('Application is running on http://localhost:10000');

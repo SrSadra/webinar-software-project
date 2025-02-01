@@ -20,10 +20,10 @@ const ProductsList = () => {
     useProductList({
       search: searchQuery,
       category,
-      perPage: 10,
+      // perPage: 10,
     });
 
-  console.log(data);
+  console.log("this is data ",data);
 
   const skeletons = [1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -55,7 +55,12 @@ const ProductsList = () => {
 
   useEffect(() => {
     if (data && data.pages) {
-      const products = data.pages.flatMap((page) => page.products);
+      
+      const products = data.pages.flatMap((page) => {
+        console.log("page",page);
+        return page.webinars;
+      });
+      console.log("produc?" , products);
 
       if (sortBy === "price desc") {
         setSortedProducts(products.sort((a, b) => b.price - a.price));
@@ -88,15 +93,15 @@ const ProductsList = () => {
           <option value="">Relevance</option>
           <option value="price desc">Price HIGH to LOW</option>
           <option value="price asc">Price LOW to HIGH</option>
-          <option value="rate desc">Rate HIGH to LOW</option>
-          <option value="rate asc">Rate LOW to HIGH</option>
+          {/* <option value="rate desc">Rate HIGH to LOW</option>
+          <option value="rate asc">Rate LOW to HIGH</option> */}
         </select>
       </header>
 
       <div className="products_list">
-        {error && <em className="form_error">{error}</em>}
+      {error && <em className="form_error">{error.message || 'An error occurred'}</em>}
         {sortedProducts.map((product) => (
-          <ProductCard key={product._id} product={product} />
+          <ProductCard key={product.id} product={product} />
         ))}
         {isFetching && skeletons.map((n) => <ProductCardSkeleton key={n} />)}
       </div>

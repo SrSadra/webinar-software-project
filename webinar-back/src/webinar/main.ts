@@ -2,22 +2,63 @@ import { NestFactory } from "@nestjs/core";
 import { MicroserviceOptions, Transport } from "@nestjs/microservices";
 import { WebinarModule } from "./webinar.module";
 
+  // async function bootstrap() {
+  //   const app = await NestFactory.createMicroservice<MicroserviceOptions>(WebinarModule, {
+  //     transport: Transport.RMQ,
+  //     options: {
+  //       urls: ['amqp://localhost:5672'],
+  //       queue: 'webinar_queue',
+  //       queueOptions: {
+  //         durable: true,
+  //       },
+  //     },
+  //   });
+    
+  //   // app.se
+
+  //   await app.listen();
+  //   console.log('Microservice 4 is listening to microservice1_queue');
+  // }
+  // bootstrap();
+
+
   async function bootstrap() {
-    const app = await NestFactory.createMicroservice<MicroserviceOptions>(WebinarModule, {
+  const app = await NestFactory.create(WebinarModule);
+    
+  // // Set global prefix
+  // app.setGlobalPrefix('api');
+
+  app.enableCors({
+    origin: "http://localhost:5173",
+    credentials: true,
+    // allowedHeaders: "Content-Type, Authorization", // Allowed headers
+    // origin: "*",
+  })
+
+  // Start HTTP app
+  await app.listen(3001);
+  console.log('HTTP server is running on http://localhost:3001/api');
+
+  // Create the microservice
+  const microservice = await NestFactory.createMicroservice<MicroserviceOptions>(WebinarModule, {
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://localhost:5672'],
-        queue: 'webinar_queue',
-        queueOptions: {
-          durable: true,
-        },
+          urls: ['amqp://localhost:5672'],
+          queue: 'webinar_queue',
+          queueOptions: {
+              durable: true,
+          },
       },
-    });
-    
-    await app.listen();
-    console.log('Microservice 4 is listening to microservice1_queue');
+  });
+
+  // Start Microservice
+  await microservice.listen();
+  console.log('Microservice is listening to webinar_queue');
   }
   bootstrap();
+
+
+
 
   // async function bootstrap() {
   //   const app = await NestFactory.create(WebinarModule);

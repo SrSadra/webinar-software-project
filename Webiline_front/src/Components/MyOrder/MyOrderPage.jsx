@@ -27,7 +27,7 @@ const MyOrderPage = () => {
         <Table headings={["Order", "Products", "Total", "Status"]}>
           <tbody>
             {orders.map((order, index) => (
-              <tr key={order._id}>
+              <tr key={order.id}>
                 <td>{index + 1}</td>
                 <td>{getProductString(order)}</td>
                 <td>${order.total}</td>

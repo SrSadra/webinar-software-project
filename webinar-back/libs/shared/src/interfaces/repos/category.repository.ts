@@ -16,7 +16,7 @@ export class categoryRepository extends BaseAbstractRepository<WebinarCategoryEn
         if (isActive !== undefined){
             query.andWhere('category.isActive = :isActive', { isActive });
         }
-        return await query.getMany();
+        return await query.getOne();
     }
 
     async findCategoryByActivate(isActive: boolean){

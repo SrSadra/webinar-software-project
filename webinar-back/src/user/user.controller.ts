@@ -29,7 +29,7 @@ export class UserController {
     @UseGuards(jwtGuard)
     @Post("certificate")
     async sendDoctorCertificate(@Body("medicalNumber") medicalNumber: number, @Req() req: UserRequest){
-        await this.userSer.validateMedicalNumber(medicalNumber);
+        // await this.userSer.validateMedicalNumber(medicalNumber);
         return true;
     }
 

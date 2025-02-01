@@ -11,7 +11,7 @@ import LinkWithIcon from "./LinkWithIcon";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
 import CartContext from "../../contexts/CartContext";
-import { getSuggestionsAPI } from "../../services/productServices";
+// import { getSuggestionsAPI } from "../../services/productServices";
 
 const Navbar = () => {
     const [search, setSearch] = useState("");
@@ -21,7 +21,7 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const user = useContext(UserContext);
-    const { cart } = useContext(CartContext);
+    // const { cart } = useContext(CartContext);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -52,19 +52,19 @@ const Navbar = () => {
         }
     };
 
-    useEffect(() => {
-        const delaySuggestions = setTimeout(() => {
-            if (search.trim() !== "") {
-                getSuggestionsAPI(search)
-                    .then((res) => setSuggestions(res.data))
-                    .catch((err) => console.log(err));
-            } else {
-                setSuggestions([]);
-            }
-        }, 300);
+    // useEffect(() => { // tmp
+    //     const delaySuggestions = setTimeout(() => {
+    //         if (search.trim() !== "") {
+    //             getSuggestionsAPI(search)
+    //                 .then((res) => setSuggestions(res.data))
+    //                 .catch((err) => console.log(err));
+    //         } else {
+    //             setSuggestions([]);
+    //         }
+    //     }, 300);
 
-        return () => clearTimeout(delaySuggestions);
-    }, [search]);
+    //     return () => clearTimeout(delaySuggestions);
+    // }, [search]);
 
     console.log(suggestions);
 
@@ -96,7 +96,7 @@ const Navbar = () => {
                                             ? "search_suggestion_link active"
                                             : "search_suggestion_link"
                                     }
-                                    key={suggestion._id}>
+                                    key={suggestion.id}>
                                     <Link
                                         to={`/products?search=${suggestion.title}`}
                                         onClick={() => {
@@ -140,12 +140,12 @@ const Navbar = () => {
                             link='/logout'
                             emoji={lock}
                         />
-                        <NavLink to='/cart' className='align_center'>
+                        {/* <NavLink to='/cart' className='align_center'>
                             Cart{" "}
                             <p className='align_center cart_counts'>
                                 {cart.length}
                             </p>
-                        </NavLink>
+                        </NavLink> */}
                     </>
                 )}
             </div>

@@ -9,14 +9,14 @@ import CartContext from "../../contexts/CartContext";
 import UserContext from "../../contexts/UserContext";
 
 const ProductCard = ({ product }) => {
-  const { addToCart } = useContext(CartContext);
+  // const { addToCart } = useContext(CartContext);
   const user = useContext(UserContext);
   return (
     <article className="product_card">
       <div className="product_image">
-        <NavLink to={`/product/${product?._id}`}>
+        <NavLink to={`/product/${product?.id}`}>
           <img
-            src={`${config.backendURL}/products/${product?.images[0]}`}
+            src={`${product.image}`}
             alt="product image"
           />
         </NavLink>
@@ -24,24 +24,24 @@ const ProductCard = ({ product }) => {
 
       <div className="product_details">
         <h3 className="product_price">${product?.price}</h3>
-        <p className="product_title">{product?.title}</p>
+        <p className="product_title">{product?.englishTitle}</p>
 
         <footer className="align_center product_info_footer">
-          <div className="align_center">
+          {/* <div className="align_center"> ///// tmp
             <p className="align_center product_rating">
               <img src={star} alt="star" /> {product?.reviews.rate}
             </p>
             <p className="product_review_count">{product?.reviews.counts}</p>
-          </div>
+          </div> */}
 
-          {product?.stock > 0 && user && (
+          {/* {product?.stock > 0 && user && (
             <button
               className="add_to_cart"
               onClick={() => addToCart(product, 1)}
             >
               <img src={basket} alt="basket button" />
             </button>
-          )}
+          )} */}
         </footer>
       </div>
     </article>

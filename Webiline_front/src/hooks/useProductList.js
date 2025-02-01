@@ -3,9 +3,13 @@ import apiClient from "../utils/api-client";
 
 const useProductList = (query) => {
   const fetchFunction = ({ pageParam = 1 }) =>
+  
     apiClient
-      .get("/products", { params: { ...query, page: pageParam } })
-      .then((res) => res.data);
+      .get("/webinar/search-webinar", { params: { ...query, page: pageParam } })
+      .then((res) => {
+        console.log("resss",res);
+        return res.data;
+      });
 
   return useInfiniteQuery({
     queryKey: ["products", query],

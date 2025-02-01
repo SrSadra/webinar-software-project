@@ -19,18 +19,18 @@ setAuthToken(getJwt());
 
 const App = () => {
   const [user, setUser] = useState(null);
-  const [cart, dispatchCart] = useReducer(cartReducer, []);
-  const { data: cartData, refetch } = useData("/cart", null, ["cart"]);
+  // const [cart, dispatchCart] = useReducer(cartReducer, []);
+  // const { data: cartData, refetch } = useData("/cart", null, ["cart"]);
 
-  const addToCartMutation = useAddToCart();
-  const removeFromCartMutation = useRemoveFromCart();
-  const updateCartMutation = useUpdateCart();
+  // const addToCartMutation = useAddToCart();
+  // const removeFromCartMutation = useRemoveFromCart();
+  // const updateCartMutation = useUpdateCart();
 
-  useEffect(() => {
-    if (cartData) {
-      dispatchCart({ type: "GET_CART", payload: { products: cartData } });
-    }
-  }, [cartData]);
+  // useEffect(() => {
+  //   if (cartData) {
+  //     dispatchCart({ type: "GET_CART", payload: { products: cartData } });
+  //   }
+  // }, [cartData]);
 
   useEffect(() => {
     if (user) {
@@ -50,79 +50,79 @@ const App = () => {
     } catch (error) {}
   }, []);
 
-  const addToCart = useCallback(
-    (product, quantity) => {
-      dispatchCart({ type: "ADD_TO_CART", payload: { product, quantity } });
+  // const addToCart = useCallback(
+  //   (product, quantity) => {
+  //     dispatchCart({ type: "ADD_TO_CART", payload: { product, quantity } });
 
-      addToCartMutation.mutate(
-        { id: product._id, quantity: quantity },
-        {
-          onError: (error) => {
-            toast.error("Something went wrong!");
-            dispatchCart({ type: "REVERT_CART", payload: { cart } });
-          },
-        }
-      );
-    },
-    [cart]
-  );
+  //     addToCartMutation.mutate(
+  //       { id: product._id, quantity: quantity },
+  //       {
+  //         onError: (error) => {
+  //           toast.error("Something went wrong!");
+  //           dispatchCart({ type: "REVERT_CART", payload: { cart } });
+  //         },
+  //       }
+  //     );
+  //   },
+  //   [cart]
+  // );
 
-  const removeFromCart = useCallback(
-    (id) => {
-      dispatchCart({ type: "REMOVE_FROM_CART", payload: { id } });
+  // const removeFromCart = useCallback(
+  //   (id) => {
+  //     dispatchCart({ type: "REMOVE_FROM_CART", payload: { id } });
 
-      removeFromCartMutation.mutate(
-        { id },
-        {
-          onError: () => {
-            toast.error("Something went wrong!");
-            dispatchCart({ type: "REVERT_CART", payload: { cart } });
-          },
-        }
-      );
-    },
-    [cart]
-  );
+  //     removeFromCartMutation.mutate(
+  //       { id },
+  //       {
+  //         onError: () => {
+  //           toast.error("Something went wrong!");
+  //           dispatchCart({ type: "REVERT_CART", payload: { cart } });
+  //         },
+  //       }
+  //     );
+  //   },
+  //   [cart]
+  // );
 
-  const updateCart = useCallback(
-    (type, id) => {
-      const updatedCart = [...cart];
-      const productIndex = updatedCart.findIndex(
-        (item) => item.product._id === id
-      );
+  // const updateCart = useCallback(
+  //   (type, id) => {
+  //     const updatedCart = [...cart];
+  //     const productIndex = updatedCart.findIndex(
+  //       (item) => item.product._id === id
+  //     );
 
-      if (type === "increase") {
-        updatedCart[productIndex].quantity += 1;
-      }
-      if (type === "decrease") {
-        updatedCart[productIndex].quantity -= 1;
-      }
+  //     if (type === "increase") {
+  //       updatedCart[productIndex].quantity += 1;
+  //     }
+  //     if (type === "decrease") {
+  //       updatedCart[productIndex].quantity -= 1;
+  //     }
 
-      dispatchCart({ type: "GET_CART", payload: { products: updatedCart } });
+  //     dispatchCart({ type: "GET_CART", payload: { products: updatedCart } });
 
-      updateCartMutation.mutate(
-        { id, type },
-        {
-          onError: () => {
-            toast.error("Something went wrong!");
-            dispatchCart({ type: "REVERT_CART", payload: { cart } });
-          },
-        }
-      );
-    },
-    [cart]
-  );
+  //     updateCartMutation.mutate(
+  //       { id, type },
+  //       {
+  //         onError: () => {
+  //           toast.error("Something went wrong!");
+  //           dispatchCart({ type: "REVERT_CART", payload: { cart } });
+  //         },
+  //       }
+  //     );
+  //   },
+  //   [cart]
+  // );
 
   return (
     <UserContext.Provider value={user}>
-      <CartContext.Provider
+      {/* <CartContext.Provider
         value={{
           cart,
           addToCart,
           removeFromCart,
           updateCart,
         }}
-      >
+      > */}
         <div className="app">
           <Navbar />
           <main>
@@ -130,7 +130,7 @@ const App = () => {
             <Routing />
           </main>
         </div>
-      </CartContext.Provider>
+      {/* </CartContext.Provider> */}
     </UserContext.Provider>
   );
 };

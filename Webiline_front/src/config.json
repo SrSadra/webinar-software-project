@@ -1,3 +1,4 @@
 {
-    "backendURL": "localhost:10000"
+    "backendURL": "http://localhost:10000",
+    "webinarURL" : "http://localhost:3001"
 }

@@ -9,21 +9,60 @@ import { CategoryModule } from "./category.module";
 
 
 
+// async function bootstrap() {
+//   const app = await NestFactory.createMicroservice<MicroserviceOptions>(CategoryModule, {
+//     transport: Transport.RMQ,
+//     options: {
+//       urls: ['amqp://localhost:5672'],
+//       queue: 'category_queue',
+//       queueOptions: {
+//         durable: true,
+//       },
+//     },
+//   });
+//   await app.listen();
+//   console.log('Microservice 2 is listening to microservice2_queue');
+// }
+// bootstrap();
+
+
+
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(CategoryModule, {
-    transport: Transport.RMQ,
-    options: {
-      urls: ['amqp://localhost:5672'],
-      queue: 'category_queue',
-      queueOptions: {
-        durable: true,
+  const app = await NestFactory.create(CategoryModule);
+    
+  // // Set global prefix
+  // app.setGlobalPrefix('api');
+
+  app.enableCors({
+    origin: "http://localhost:5173",
+    credentials: true,
+    // allowedHeaders: "Content-Type, Authorization", // Allowed headers
+    // origin: "*",
+  })
+
+  // Start HTTP app
+  await app.listen(3002);
+  console.log('HTTP server is running on http://localhost:3002/api');
+
+  // Create the microservice
+  const microservice = await NestFactory.createMicroservice<MicroserviceOptions>(CategoryModule, {
+      transport: Transport.RMQ,
+      options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'category_queue',
+          queueOptions: {
+              durable: true,
+          },
       },
-    },
   });
-  await app.listen();
-  console.log('Microservice 2 is listening to microservice2_queue');
-}
-bootstrap();
+
+  // Start Microservice
+  await microservice.listen();
+  console.log('Microservice is listening to category_queue');
+  }
+  bootstrap();
+
+
 
 // async function bootstrap() {
 //   const app = await NestFactory.create(CategoryModule);
