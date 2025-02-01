@@ -21,6 +21,7 @@ export class UserService {
     }
 
     async uploadUserDocument(fileTitles: string[],files : MulterFile[] , username: string){
+        console.log(typeof fileTitles);
         fileTitles.forEach(async (el) => {
             const isFounded = await this.certificateRep.findByTitle(el);
             if (isFounded){
@@ -31,7 +32,8 @@ export class UserService {
         await this.certificateRep.saveMany(fileTitles.map((el, index) => {
             return this.certificateRep.create({
                 title: el,
-                imageLink: filesUrl[index]
+                imageLink: filesUrl[index],
+                // profile: {user:{username}}
             })
         }));
     }

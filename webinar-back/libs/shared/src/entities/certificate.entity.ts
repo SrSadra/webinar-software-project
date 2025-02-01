@@ -12,7 +12,7 @@ export class CertificateEntity {
     @Column()
     imageLink: string;
 
-    @ManyToOne(() => ProfileEntity, (profile) => profile.certificates)
+    @ManyToOne(() => ProfileEntity, (profile) => profile.certificates, {cascade: true})
     @JoinColumn({name: "profile_id"})
     profile: ProfileEntity;
 }

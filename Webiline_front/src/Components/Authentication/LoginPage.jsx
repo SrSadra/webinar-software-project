@@ -12,7 +12,7 @@ const schema = z.object({
     .min(3),
   password: z
     .string()
-    .min(8, { message: "Password should be at least 8 characters" }),
+    .min(6, { message: "Password should be at least 8 characters" }),
 });
 
 const LoginPage = () => {

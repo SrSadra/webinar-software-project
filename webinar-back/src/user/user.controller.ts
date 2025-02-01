@@ -20,10 +20,12 @@ export class UserController {
     //     return await this.userSer.changePass(req.user.username,passDto.oldPass,passDto.newPass);
     // }
 
+    @UseGuards(jwtGuard)
     @Post("upload-document")
     @UseInterceptors(FilesInterceptor("userDocument", 3)) // userFiles name shoud match with html name attr // how to make it globally
-    async uploadDocment(@Body() titles : string[], @UploadedFiles() files : MulterFile[], @Req() req : UserRequest){
-        await this.userSer.uploadUserDocument(titles, files,req.user.username);
+    async uploadDocment(@Body("titles") titles : string, @UploadedFiles() files : MulterFile[], @Req() req : UserRequest){
+        const parsedTitles = typeof titles === "string" ? JSON.parse(titles) : titles;
+        await this.userSer.uploadUserDocument(parsedTitles, files,req.user.username);
     }
 
     @UseGuards(jwtGuard)

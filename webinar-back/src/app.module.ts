@@ -16,6 +16,7 @@ import { EpisodeModule } from './episode/episode.module';
 import { SharedModule } from '@app/shared';
 import { PaymentModule } from './payment/payment.module';
 import { CategoryModule } from './category/category.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -46,7 +47,8 @@ import { CategoryModule } from './category/category.module';
     WebinarModule,
     EpisodeModule,
     CategoryModule,
-    UserModule
+    UserModule,
+    OrderModule
   ],
   controllers: [AppController],
   providers: [AppService],

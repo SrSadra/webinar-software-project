@@ -6,6 +6,7 @@ import { certificateRepository } from '@app/shared/interfaces/repos/certificates
 import { profileRepository } from '@app/shared/interfaces/repos/profile.repository';
 import { userRepository } from '@app/shared/interfaces/repos/user.repository';
 import { RabbitmqModule } from '@app/shared/rabbitmq.module';
+import { jwtAuthModule } from '@app/shared/strategies/jwtauth.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
@@ -16,7 +17,8 @@ import { UserService } from './user.service';
     imports : [
         SharedModule,
         // RabbitmqModule.registerRmq("USER_SERVICE", "user_queue"),
-        TypeOrmModule.forFeature([userEntity,ProfileEntity,CertificateEntity])
+        TypeOrmModule.forFeature([userEntity,ProfileEntity,CertificateEntity]),
+        jwtAuthModule
     // , AuthModule
     ],
     controllers : [UserController],

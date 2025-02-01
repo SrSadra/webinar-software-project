@@ -32,11 +32,11 @@ const App = () => {
   //   }
   // }, [cartData]);
 
-  useEffect(() => {
-    if (user) {
-      refetch();
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     refetch();
+  //   }
+  // }, [user]);
 
   useEffect(() => {
     try {

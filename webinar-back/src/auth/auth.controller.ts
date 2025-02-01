@@ -21,7 +21,7 @@ export class AuthController {
         }
         res.cookie('Authentication', tmp, {
             httpOnly: true, // Prevents client-side scripts from accessing the cookie
-            sameSite: 'strict', // Protect against CSRF
+            // sameSite: 'strict', // Protect against CSRF
             maxAge: 24 * 60 * 60 * 1000, // Cookie expires in 1 day
         });
         return tmp;
