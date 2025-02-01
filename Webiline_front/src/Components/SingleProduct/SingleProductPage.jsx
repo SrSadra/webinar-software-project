@@ -9,7 +9,7 @@ import Loader from "./../Common/Loader";
 import CartContext from "../../contexts/CartContext";
 import UserContext from "../../contexts/UserContext";
 
-const SingleProductPage = ({ addToCart }) => {
+const SingleProductPage = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
@@ -33,6 +33,7 @@ const SingleProductPage = ({ addToCart }) => {
             <div className="single_product_thumbnails">
               {product.images.map((image, index) => (
                 <img
+                  key={index}
                   src={`${config.backendURL}/products/${image}`}
                   alt={product.title}
                   className={selectedImage === index ? "selected_image" : ""}
@@ -55,21 +56,28 @@ const SingleProductPage = ({ addToCart }) => {
 
             {user && (
               <>
-                <h2 className="quantity_title">Quantity:</h2>
+                <h2 className="quantity_title">Number of participants:</h2>
                 <div className="align_center quantity_input">
-                  <QuantityInput
+                  {/* <QuantityInput
                     quantity={quantity}
                     setQuantity={setQuantity}
                     stock={product.stock}
-                  />
+                  /> */}
                 </div>
 
-                <button
-                  className="search_button add_cart"
-                  onClick={() => addToCart(product, quantity)}
-                >
-                  Add to Cart
-                </button>
+                {product.stock > 0 ? (
+                  <button
+                    className="search_button add_cart"
+                    onClick={() => addToCart(product, quantity)}
+                  >
+                    Add participant
+                  </button>
+                ) : (
+                  <p className="webinar_full_message">
+                    {" "}
+                    Webinar is full right now!{" "}
+                  </p>
+                )}
               </>
             )}
           </div>

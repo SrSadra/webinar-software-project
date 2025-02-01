@@ -61,15 +61,3 @@
     padding: 4px 8px;
     outline: none;
 }
-
-.signup-message {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #05cc5b;
-    text-align: center;
-    /* height: 70px;
-    width: 100px; */
-    
-}
-

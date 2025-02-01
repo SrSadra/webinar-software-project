@@ -1,172 +1,177 @@
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import "./SignupPage.css";
 import user from "../../assets/user.webp";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signup } from "../../services/userServices";
+import { getUser, signup } from "../../services/userServices";
+import { Navigate } from "react-router-dom";
 
 const schema = z
-  .object({
-    // name: z
-    //   .string()
-    //   .min(3, { message: "Name shoud be more than 3 characters" }),
-    email: z.string().email({ message: "Please enter valid email address" }),
-    password: z
-      .string()
-      .min(5, { message: "The password must be at least 8 characters" }),
-    confirmPassword: z.string(),
-    phoneNumber: z.string(),
-    username: z.string(),
-    firstname: z.string()
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Confirm password does not match the Password.",
-    path: ["confirmPassword"],
-  });
+    .object({
+        name: z
+            .string()
+            .min(3, { message: "Name should be at least 3 characters." }),
+        email: z.string().email({ message: "Please enter valid email." }),
+        password: z
+            .string()
+            .min(6, { message: "Password must be at least 6 characters." }),
+        confirmPassword: z.string(),
+        deliveryAddress: z
+            .string()
+            .min(15, { message: "Address must be at least 15 characters." }),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+        message: "Confirm Password does not match Password.",
+        path: ["confirmPassword"],
+    });
 
 const SignupPage = () => {
-  const [profilePic, setprofilePic] = useState(null);
-  const [formError, setFormError] = useState("");
+    const [profilePic, setProfilePic] = useState(null);
+    const [formError, setFormError] = useState("");
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ resolver: zodResolver(schema) });
-  const onSubmit = async (FormData) => {
-    try {
-      await signup(FormData, profilePic);
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({ resolver: zodResolver(schema) });
 
-      window.location = "/login"; // make a placeholder for login
-    } catch (err) {
-      if (err.response && err.response.status === 400) {
-        setFormError(err.response.data.message);
-      }
+    const onSubmit = async (formData) => {
+        try {
+            await signup(formData, profilePic);
+
+            window.location = "/";
+        } catch (err) {
+            if (err.response && err.response.status === 400) {
+                setFormError(err.response.data.message);
+            }
+        }
+    };
+
+    if (getUser()) {
+        return <Navigate to='/' />;
     }
-  };
-  return (
-    <section className="align_center form_page">
-      <form
-        className="authentication_form signup_form"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <h2>SignUp Form</h2>
 
-        <div className="image_input_section">
-          <div className="image_preview">
-            <img
-              src={profilePic ? URL.createObjectURL(profilePic) : user}
-              id="file-ip-1-preview"
-            />
-          </div>
-          <label htmlFor="file-ip-1" className="image_label">
-            Upload Image
-          </label>
-          <input
-            type="file"
-            id="file-ip-1"
-            onChange={(e) => setprofilePic(e.target.files[0])}
-            className="image_input"
-          />
-        </div>
+    return (
+        <section className='align_center form_page'>
+            <form
+                className='authentication_form signup_form'
+                onSubmit={handleSubmit(onSubmit)}>
+                <h2>SignUp Form</h2>
 
-        {/* Form Inputs */}
-        <div className="form_inputs signup_form_input">
-          <div>
-            <label htmlFor="firstname">Firstame</label>
-            <input
-              id="firstname"
-              className="form_text_input"
-              type="text"
-              placeholder="Enter your name"
-              {...register("firstname")}
-            />
-            {errors.name && (
-              <em className="form_error">{errors.firstname.message}</em>
-            )}
-          </div>
+                <div className='image_input_section'>
+                    <div className='image_preview'>
+                        <img
+                            src={
+                                profilePic
+                                    ? URL.createObjectURL(profilePic)
+                                    : user
+                            }
+                            id='file-ip-1-preview'
+                        />
+                    </div>
+                    <label htmlFor='file-ip-1' className='image_label'>
+                        Upload Image
+                    </label>
+                    <input
+                        type='file'
+                        onChange={(e) => setProfilePic(e.target.files[0])}
+                        id='file-ip-1'
+                        className='image_input'
+                    />
+                </div>
 
-          <div>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              className="form_text_input"
-              type="email"
-              placeholder="Enter your email address"
-              {...register("email")}
-            />
-            {errors.email && (
-              <em className="form_error">{errors.email.message}</em>
-            )}
-          </div>
+                {/* Form Inputs */}
+                <div className='form_inputs signup_form_input'>
+                    <div>
+                        <label htmlFor='name'>Name</label>
+                        <input
+                            id='name'
+                            className='form_text_input'
+                            type='text'
+                            placeholder='Enter your name'
+                            {...register("name")}
+                        />
+                        {errors.name && (
+                            <em className='form_error'>
+                                {errors.name.message}
+                            </em>
+                        )}
+                    </div>
 
-          <div>
-            <label htmlFor="username">Username</label>
-            <input
-              id="username"
-              className="form_text_input"
-              type="text"
-              placeholder="Enter your username"
-              {...register("username")}
-            />
-            {errors.username && (
-              <em className="form_error">{errors.username.message}</em>
-            )}
-          </div>
+                    <div>
+                        <label htmlFor='email'>Email</label>
+                        <input
+                            id='email'
+                            className='form_text_input'
+                            type='email'
+                            placeholder='Enter your email address'
+                            {...register("email")}
+                        />
+                        {errors.email && (
+                            <em className='form_error'>
+                                {errors.email.message}
+                            </em>
+                        )}
+                    </div>
 
+                    <div>
+                        <label htmlFor='password'>Password</label>
+                        <input
+                            id='password'
+                            className='form_text_input'
+                            type='password'
+                            placeholder='Enter your password'
+                            {...register("password")}
+                        />
+                        {errors.password && (
+                            <em className='form_error'>
+                                {errors.password.message}
+                            </em>
+                        )}
+                    </div>
 
-          <div>
-            <label htmlFor="phonenumber">Phonenumber</label>
-            <input
-              id="phonenumber"
-              className="form_text_input"
-              type="text"
-              placeholder="Enter your phonenumber"
-              {...register("phoneNumber")}
-            />
-            {errors.email && (
-              <em className="form_error">{errors.phoneNumber.message}</em>
-            )}
-          </div>
+                    <div>
+                        <label htmlFor='cpassword'>Confirm Password</label>
+                        <input
+                            id='cpassword'
+                            className='form_text_input'
+                            type='password'
+                            placeholder='Enter confirm password'
+                            {...register("confirmPassword")}
+                        />
+                        {errors.confirmPassword && (
+                            <em className='form_error'>
+                                {errors.confirmPassword.message}
+                            </em>
+                        )}
+                    </div>
 
-          <div>
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              className="form_text_input"
-              type="password"
-              placeholder="Enter your password"
-              {...register("password")}
-            />
-            {errors.password && (
-              <em className="form_error">{errors.password.message}</em>
-            )}
-          </div>
+                    <div className='signup_textares_section'>
+                        <label htmlFor='address'>Delivery Address</label>
+                        <textarea
+                            id='address'
+                            className='input_textarea'
+                            placeholder='Enter delivery address'
+                            {...register("deliveryAddress")}
+                        />
+                        {errors.deliveryAddress && (
+                            <em className='form_error'>
+                                {errors.deliveryAddress.message}
+                            </em>
+                        )}
+                    </div>
+                </div>
 
-          <div>
-            <label htmlFor="cpassword">Confirm Password</label>
-            <input
-              id="cpassword"
-              className="form_text_input"
-              type="password"
-              placeholder="Enter confirm password"
-              {...register("confirmPassword")}
-            />
-            {errors.confirmPassword && (
-              <em className="form_error">{errors.confirmPassword.message}</em>
-            )}
-          </div>
-        </div>
+                {formError && <em className='form_error'>{formError}</em>}
 
-        {formError && <em className="form_error">{formError}</em>}
-
-        <button className="search_button form_submit" type="submit">
-          Submit
-        </button>
-      </form>
-    </section>
-  );
+                <button className='search_button form_submit' type='submit'>
+                    Submit
+                </button>
+            </form>
+        </section>
+    );
 };
 
 export default SignupPage;

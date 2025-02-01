@@ -2,39 +2,49 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import "./LoginPage.css";
-import { login } from "../../services/userServices";
+import { getUser, login } from "../../services/userServices";
+import { Navigate, useLocation } from "react-router-dom";
 
 const schema = z.object({
   email: z
     .string()
-    .email({ message: "Please enter valid email address" })
+    .email({ message: "Please enter valid email address." })
     .min(3),
   password: z
     .string()
-    .min(8, { message: "Password should be at least 8 characters" }),
+    .min(6, { message: "Password should be at least 6 characters." }),
 });
 
 const LoginPage = () => {
   const [formError, setFormError] = useState("");
+  const location = useLocation();
+  console.log("Login location", location);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: zodResolver(schema) });
-  const onSubmit = async (FormData) => {
-    try {
-      const tmp =  await login(FormData);
-      console.log(tmp);
 
-      window.location = "/";
+  const onSubmit = async (formData) => {
+    try {
+      await login(formData);
+
+      const { state } = location;
+      window.location = state ? state.from : "/";
     } catch (err) {
-      console.log(err);
-      if (err.response && err.response.status === 401) {
-        setFormError(err.response.data.msg);
+      if (err.response && err.response.status === 400) {
+        setFormError(err.response.data.message);
       }
     }
   };
+
+  if (getUser()) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <section className="align_center form_page">
       <form className="authentication_form" onSubmit={handleSubmit(onSubmit)}>
@@ -44,7 +54,6 @@ const LoginPage = () => {
             <label htmlFor="email">Email</label>
             <input
               type="email"
-              //ref={nameRef}
               id="email"
               className="form_text_input"
               placeholder="Enter your email address"
@@ -58,7 +67,6 @@ const LoginPage = () => {
             <label htmlFor="password">Password</label>
             <input
               type="password"
-              //ref={phoneRef}
               id="password"
               className="form_text_input"
               placeholder="Enter your password"
@@ -68,7 +76,9 @@ const LoginPage = () => {
               <em className="form_error">{errors.password.message}</em>
             )}
           </div>
+
           {formError && <em className="form_error">{formError}</em>}
+
           <button type="submit" className="search_button form_submit">
             Submit
           </button>

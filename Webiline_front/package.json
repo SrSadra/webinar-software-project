@@ -1,32 +1,36 @@
 {
-  "name": "weibilne_project",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "cartwish",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^6.0.5"
-  },
   "dependencies": {
-    "@hookform/resolvers": "^3.9.1",
-    "@tanstack/react-query": "^5.65.1",
-    "@tanstack/react-query-devtools": "^5.66.0",
-    "axios": "^1.7.9",
-    "jwt-decode": "^4.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-hook-form": "^7.54.2",
-    "react-loading-skeleton": "^3.5.0",
-    "react-router-dom": "^7.1.1",
-    "react-toastify": "^11.0.3",
-    "zod": "^3.24.1"
+    "@hookform/resolvers": "^3.0.1",
+    "@tanstack/react-query": "^5.12.2",
+    "@tanstack/react-query-devtools": "^5.13.3",
+    "axios": "^1.4.0",
+    "jwt-decode": "^3.1.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.9",
+    "react-loading-skeleton": "^3.3.1",
+    "react-router-dom": "^6.11.2",
+    "react-toastify": "^9.1.3",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^4.0.0",
+    "eslint": "^8.38.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.3.4",
+    "vite": "^4.5.9"
   }
 }

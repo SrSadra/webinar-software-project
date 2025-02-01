@@ -20,7 +20,7 @@ setAuthToken(getJwt());
 const App = () => {
   const [user, setUser] = useState(null);
   const [cart, dispatchCart] = useReducer(cartReducer, []);
-  const { data: cartData, refetch } = useData("/cart", null, ["cart"]);
+  const { data: cartData, refetch } = useData("/api/cart", null, ["cart"]);
 
   const addToCartMutation = useAddToCart();
   const removeFromCartMutation = useRemoveFromCart();

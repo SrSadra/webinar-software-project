@@ -1,30 +1,30 @@
 import React from "react";
 
-import iphone from "../../assets/iphone-14-pro.webp";
-import mac from "../../assets/mac-system-cut.jfif";
+import mainPic from "../../assets/webinarMain.png";
+import participate from "../../assets/participateMain.png";
 import HeroSection from "./HeroSection";
 import FeaturedProducts from "./FeaturedProducts";
 
 const HomePage = () => {
-    return (
-        <div>
-            <HeroSection
-                title='Buy iPhone 14 Pro'
-                subtitle='Experience the power of the latest iPhone 14 with our most Pro camera ever.'
-                link='/product/646e255f928653e4d401da34'
-                image={iphone}
-            />
+  return (
+    <div>
+      <HeroSection
+        title="Webiline Learning Online"
+        subtitle="Experience the new methods in learning with the help of technology and online courses"
+        link="/product/646e255f928653e4d401da34"
+        image={mainPic}
+      />
 
-            <FeaturedProducts />
+      <FeaturedProducts />
 
-            <HeroSection
-                title='Build the ultimate setup'
-                subtitle='You can add Studio Display and colour-matched Magic accessories to your bag after configure your Mac mini.'
-                link='/product/646e255f928653e4d401da3c'
-                image={mac}
-            />
-        </div>
-    );
+      <HeroSection
+        title="Participate Now!"
+        subtitle="Explore in Webiline to find your favourite course"
+        link="/product/646e255f928653e4d401da3c"
+        image={participate}
+      />
+    </div>
+  );
 };
 
 export default HomePage;
