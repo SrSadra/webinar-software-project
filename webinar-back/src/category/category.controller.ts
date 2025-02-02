@@ -17,22 +17,22 @@ export class CategoryController {
         // private sharedSer: RabbitmqService
         ) {}
 
-    @UseGuards(jwtGuard, RolesGuard)
-    @Role(Roles.MANAGER)
+    // @UseGuards(jwtGuard, RolesGuard)
+    // @Role(Roles.MANAGER)
     @Patch('edit/:id')
     async updateCategoryActions(@Param('id') id: number, @Body() dto: updateCategoryDto) {
       return this.categorySer.updateCategory(id, dto);
     }
 
-    @UseGuards(jwtGuard, RolesGuard)
-    @Role(Roles.MANAGER)
+    // @UseGuards(jwtGuard, RolesGuard)
+    // @Role(Roles.MANAGER)
     @Post("create-category")
     async createCategory(@Body() newCategory: newCategoryDto){
         return await this.categorySer.createCategory(newCategory);
     }
 
-    @UseGuards(jwtGuard, RolesGuard)
-    @Role(Roles.MANAGER)
+    // @UseGuards(jwtGuard, RolesGuard)
+    // @Role(Roles.MANAGER)
     @Get("categories")
     async searchCategory(@Query("title") title? : string,@Query("isActive") isActive?: boolean){
         return await this.categorySer.searchCategory(title,isActive);

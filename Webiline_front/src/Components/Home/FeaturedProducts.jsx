@@ -18,7 +18,7 @@ const FeaturedProducts = () => {
   const skeletons = [1, 2, 3];
   return (
     <section className="featured_products">
-      <h2>Popular Webinars</h2>
+      <h2>Recently Added Webinars</h2>
 
       <div className="align_center featured_products_list">
         {error && <em className="form_error">{error}</em>}

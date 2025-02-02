@@ -32,7 +32,7 @@ export class WebinarService {
         if (!manager){
             throw new NotFoundException("Manager is not exist!");
         }
-
+        
         const {categoryName, subCategoryNames} = createDto;
         console.log(categoryName);
         const $ob = this.categorySer.send<WebinarCategoryEntity[]>({cmd: "find-category-by-title"}, {title: categoryName});
@@ -70,8 +70,9 @@ export class WebinarService {
         if (!webinar){
             throw new NotFoundException("This webinar doesnt exist!");
         }
-        const $ob = this.userSer.send({cmd: "get-profile"}, {username});
+        const $ob = this.userSer.send({cmd: "get-profile"}, { username: username.username});
         const foundedTeacher: ProfileEntity = await firstValueFrom($ob).catch((err) => err);
+        console.log("be teacher", foundedTeacher);
         if (!foundedTeacher){
             throw new NotFoundException("This User profile doesnt exist!");
         }
@@ -231,17 +232,22 @@ export class WebinarService {
       }
     
 
-      async getWebinar(title: string){
-        const webinar = await this.webinarRep.getExactWebinarSafe(title);
+      async getWebinar(slug: string){
+        console.log("here");
+        
+        const webinar = await this.webinarRep.getExactWebinarSafe(slug);
         if (!webinar){
             throw new NotFoundException("No webinar founded");
         }
         console.log(webinar);
         const $ob = this.episodeSer.send<EpisodeEntity[]>({cmd: "find-webinar-episodes"}, {webinar}).pipe(timeout(10000)); // Timeout after 5 seconds
         let episodes: EpisodeEntity[] = await firstValueFrom($ob).catch((err) => err);
-        console.log(episodes);
         if (!episodes){
             episodes = [];
+        }
+        
+        if (!Array.isArray(episodes)) {
+          episodes = [episodes]; // Convert single JSON object to an array
         }
         return {webinar, episodes};
       }
@@ -280,11 +286,22 @@ export class WebinarService {
           throw new InternalServerErrorException('Error fetching featured products');
         }
       }
-    
-    
-    }
 
-      
+
+    async getWebinarParticipants(webinarId: number): Promise<ProfileEntity[]> {
+      const webinar = await this.webinarRep.findByCondition({
+        where: { id: webinarId },
+        relations: ['participants', 'participants.user'], // Load participants relation
+      });
+  
+      if (!webinar) {
+        throw new NotFoundException('Webinar not found');
+      }
+  
+      return webinar.participants;
+    }
+  
+  }
 
 
 

@@ -19,6 +19,7 @@ const useData = (endpoint, customConfig = {}, queryKey, staleTime = 300_000) => 
       console.log(data);
       return data;
     }
+    
 
     console.log("Fetching using apiClient");
     const response = await apiClient.get(endpoint, customConfig);

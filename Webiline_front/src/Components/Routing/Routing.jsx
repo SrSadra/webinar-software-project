@@ -17,7 +17,7 @@ const Routing = () => {
         <Routes>
             <Route path='/' element={<HomePage />} />
             <Route path='/products' element={<ProductsPage />} />
-            <Route path='/product/:id' element={<SingleProductPage />} />
+            <Route path='/product/:slug' element={<SingleProductPage />} />
             <Route path='/signup' element={<SignupPage />} />
             <Route path='/login' element={<LoginPage />} />
             <Route element={<ProtectedRoute />}>

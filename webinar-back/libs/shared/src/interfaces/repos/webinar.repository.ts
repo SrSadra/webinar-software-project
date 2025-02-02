@@ -26,7 +26,7 @@ export class webinarRepository extends BaseAbstractRepository<webinarEntity> {
     //   })
     // }
 
-    public async getExactWebinarSafe(title: string){
+    public async getExactWebinarSafe(slug: string){
         return await this.webinarRep
       .createQueryBuilder('webinar')
       .select([
@@ -38,8 +38,9 @@ export class webinarRepository extends BaseAbstractRepository<webinarEntity> {
         'webinar.price',
         'webinar.discountPercent',
         'webinar.onlyDoctor',
+        'webinar.slug',
       ])
-      .where('webinar.englishTitle = :title', { title: `${title}` }).getOne();
+      .where('webinar.slug = :slug', { slug: `${slug}` }).getOne();
     }
 
     async getWebinarForPurchase(slug: string){

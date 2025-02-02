@@ -15,7 +15,7 @@ export class ServiceController {
         return await this.paymentSer.purchaseWebinar(webinarSlug);
     }
 
-    @UseGuards(jwtGuard)
+    // @UseGuards(jwtGuard)
     @Post("startpurchase")
     async startPurchase(@Body("slug") slug: string,@Body("discountPercent") discountPercent: number ,@Res() res : Response){
         console.log("alooo");
@@ -32,7 +32,7 @@ export class ServiceController {
     }
 
 
-    @UseGuards(jwtGuard, PurchaseGuard)
+    // @UseGuards(jwtGuard, PurchaseGuard)
     @Post("done")
     donePurchase(@Req() req : webinarRequest, @Res() res : Response){
         console.log("aj", req.user, req.webinar); 

@@ -38,6 +38,20 @@ export class EpisodeService {
         await this.episodeFileRep.saveMany(createdFiles);
     }
 
+
+    async getEpisodeFiles(episodeId: number) {
+        const foundedEpisode = await this.episodeRep.findByCondition({where : {id: episodeId}})
+        if (!foundedEpisode) {
+            throw new NotFoundException("Episode not found!");
+        }
+        const episodeFiles = await this.episodeFileRep.findAll({
+            where: { webinarEpisode: { id: foundedEpisode.id } },
+            select: ["id", "filePath"],
+        });
+    
+        return episodeFiles;
+    }
+
     async createEpisode(newEpisode: newEpisodeDto, webinar: webinarEntity){//add video?
         try{
             const {title, startTime,endTime} = newEpisode;
@@ -89,5 +103,29 @@ export class EpisodeService {
         });
     
         return await this.commentRep.save(newComment);
+    }
+
+
+    async getEpisodeComments(episodeId: number) {
+        const episode = await this.episodeRep.findByCondition({ where: { id: episodeId } });
+        if (!episode) {
+            throw new NotFoundException("Episode not found.");
+        }
+    
+        const comments = await this.commentRep.findAll({
+            where: { episode: { id: episodeId } },
+            relations: ["author", "author.user"], 
+            order: { createdAt: "DESC" } //sort by newest first
+        });
+    
+        return comments.map(comment => ({
+            id: comment.id,
+            comment: comment.comment,
+            createdAt: comment.createdAt,
+            author: {
+                id: comment.author.id,
+                username: comment.author.user.username,
+            }
+        }));
     }
 }

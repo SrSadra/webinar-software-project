@@ -1,4 +1,4 @@
-import { Role } from '@app/shared/decorators/roles.decorator';
+ import { Role } from '@app/shared/decorators/roles.decorator';
 import { newEpisodeDto } from '@app/shared/dtos/newEpisode.dto';
 import { newTeacherDto } from '@app/shared/dtos/newTeacher.dto';
 import { newWebinarDto } from '@app/shared/dtos/newWebinar.dto';
@@ -47,9 +47,9 @@ export class WebinarController {
         );
       }
 
-    @Get("/:title")
-    async getWebinar(@Param("title") title: string) {
-      return await this.webinarSer.getWebinar(title);
+    @Get(":slug")
+    async getWebinar(@Param("slug") slug: string) {
+      return await this.webinarSer.getWebinar(slug);
     }
 
     // @Get()
@@ -73,24 +73,29 @@ export class WebinarController {
         return await this.webinarSer.createWebinar(newWebinar, imagefile, req);
     }
 
-    @Role(Roles.MANAGER)
-    @UseGuards(jwtGuard, RolesGuard)
+    // @Role(Roles.MANAGER)
+    // @UseGuards(jwtGuard, RolesGuard)
     @Put(":id/teacher")
     async addTeacher(@Body() teacher: newTeacherDto, @Param("id") id : number){
         return await this.webinarSer.addTeacher(teacher, id);
     }
 
-    @Role(Roles.MANAGER)
-    @UseGuards(jwtGuard, RolesGuard)
+    // @Role(Roles.MANAGER)
+    // @UseGuards(jwtGuard, RolesGuard)
     @Post(":id/add-episode")
     async addEpisode(@Body() newEpisode: newEpisodeDto,@Param("id") webinarId: number){
         return  await this.webinarSer.addEpisode(newEpisode,webinarId);
     }
 
-    @UseGuards(jwtGuard)
+    // @UseGuards(jwtGuard)
     @Put(":id/edit")
     async editWebinar(@Body() webinar: updateWebinarDto,@Param("id") id : number){
         return await this.webinarSer.updateWebinar(webinar,id);
+    }
+
+    @Get(":id/participants")
+    async getWebinarParticipants(@Param("id") id : number){
+      return await this.webinarSer.getWebinarParticipants(id);
     }
 
     @MessagePattern({cmd: "find-webinar-by-slug"})

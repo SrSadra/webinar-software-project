@@ -16,8 +16,8 @@ export class UserService {
         private cloudinarySer: CloudinaryService
         ){}
 
-    async getAllUsers(){
-        return await this.userRep.findAll();
+    async getAllUsers(username?: string){
+        return await this.userRep.findAll({where : {username}});
     }
 
     async uploadUserDocument(fileTitles: string[],files : MulterFile[] , username: string){

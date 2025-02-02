@@ -20,7 +20,7 @@ export class UserController {
     //     return await this.userSer.changePass(req.user.username,passDto.oldPass,passDto.newPass);
     // }
 
-    @UseGuards(jwtGuard)
+    // @UseGuards(jwtGuard)
     @Post("upload-document")
     @UseInterceptors(FilesInterceptor("userDocument", 3)) // userFiles name shoud match with html name attr // how to make it globally
     async uploadDocment(@Body("titles") titles : string, @UploadedFiles() files : MulterFile[], @Req() req : UserRequest){
@@ -28,11 +28,16 @@ export class UserController {
         await this.userSer.uploadUserDocument(parsedTitles, files,req.user.username);
     }
 
-    @UseGuards(jwtGuard)
+    // @UseGuards(jwtGuard)
     @Post("certificate")
     async sendDoctorCertificate(@Body("medicalNumber") medicalNumber: number, @Req() req: UserRequest){
         // await this.userSer.validateMedicalNumber(medicalNumber);
         return true;
+    }
+
+    @MessagePattern({cmd: "get-all-users"})
+    async getAllUsers(@Ctx() context: RmqContext,@Payload() payload: {username: string | null}){
+        return await this.userSer.getAllUsers(payload.username);
     }
 
 

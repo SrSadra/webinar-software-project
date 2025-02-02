@@ -14,14 +14,14 @@ const ProductCard = ({ product }) => {
   const updateProduct = useUpdateProduct(); // ✅ Initialize update function
   const [isEditing, setIsEditing] = useState(false);
   const [updatedProduct, setUpdatedProduct] = useState({
-    title: product.title,
+    title: product.englishTitle,
     price: product.price,
     stock: product.stock,
   });
 
   const handleUpdate = () => {
     updateProduct.mutate(
-      { id: product._id, updatedData: updatedProduct },
+      { id: product.id, updatedData: updatedProduct },
       {
         onSuccess: () => {
           setIsEditing(false); // ✅ Close edit mode after updating
@@ -33,7 +33,7 @@ const ProductCard = ({ product }) => {
   return (
     <article className="product_card">
       <div className="product_image">
-        <NavLink to={`/product/${product?.id}`}>
+        <NavLink to={`/product/${product?.slug}`}>
           <img
             src={`${product.image}`}
             alt="product image"
@@ -76,16 +76,16 @@ const ProductCard = ({ product }) => {
           </div>
         ) : (
           <>
-            <p className="product_title">{product?.title}</p>
+            <p className="product_title">{product?.englishTitle}</p>
             <h3 className="product_price">${product?.price}</h3>
 
             <footer className="align_center product_info_footer">
               <div className="align_center">
-                <p className="align_center product_rating">
-                  <img src={star} alt="star" /> {product?.reviews.rate}
+                <p className="align_center product_description">
+                    {product?.description}
                 </p>
                 <p className="product_review_count">
-                  {product?.reviews.counts}
+                  {/* {product?.reviews.counts} tmp */  }
                 </p>
               </div>
 
@@ -100,7 +100,7 @@ const ProductCard = ({ product }) => {
             </footer>
 
             {/* ✅ Show "Edit" button only for managers */}
-            {user?.role === "manager" && (
+            {user?.role !== "user" || user?.role !== "doctor" && (
               <button
                 className="edit_button"
                 onClick={() => setIsEditing(true)}

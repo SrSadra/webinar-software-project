@@ -24,14 +24,20 @@ export class EpisodeController {
         return await this.episodeSer.uploadEpisodeFiles(files, episodeTitle);
     }
 
+    
+    @Get("episode/:id/files")
+    async getEpisodeFiles(@Param("id") episodeId: number){
+        return await this.episodeSer.getEpisodeFiles(episodeId)
+    }
+
     @Post("episode/:id/comments")
     async addComment(@Req() req: UserRequest, @Body("comment") comment : string, @Param("id") episodeId: number){
         return await this.episodeSer.addComment(comment, req.user, episodeId);
     }
 
     @Get("episode/:id/comments")
-    getEpisodeComment(){
-
+    async getEpisodeComment(@Param("id") episodeId: number){
+        return await this.episodeSer.getEpisodeComments(episodeId);
     }
 
     @MessagePattern({cmd: "create-episode"})

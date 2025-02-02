@@ -19,8 +19,6 @@ export class jwtStrategy extends PassportStrategy(Strategy,"jwt"){
         jwtFromRequest: 
         ExtractJwt.fromExtractors([
           (request: Request) => {
-            // console.log(request?.cooki);
-            // console.log("cookoo", request.cookies);
             
             return request.cookies.Authentication?.token;
           },

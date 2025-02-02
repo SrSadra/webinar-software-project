@@ -4,18 +4,6 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 
-// async function bootstrap() {
-//   console.log("zendeii");
-//   const app = await NestFactory.create(AppModule);
-//   app.use(cookieParser());
-//   app.useGlobalPipes(new ValidationPipe({
-//     transform: true, // Automatically transform payloads to match DTO types
-//     // whitelist: true, // Strip unknown properties
-//   }))
-  
-//   await app.listen(10000);
-// }
-// bootstrap();
 
 async function bootstrap() {
   // Create the main application (Gateway/API)
@@ -79,13 +67,5 @@ async function bootstrap() {
 bootstrap();
 
 
-// async function bootstrap() {
-//   const app = await NestFactory.create(AppModule);
-
-//   // API Gateway listening on port 3000
-//   await app.listen(10000);
-//   console.log('API Gateway is running on http://localhost:3000');
-// }
-// bootstrap();
 
 

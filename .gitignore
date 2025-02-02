@@ -1,6 +1,5 @@
 node_modules
-<<<<<<< HEAD
 .vscode
-=======
-cartwish backend
->>>>>>> origin/alirezab
+cartwish-backend
+package.json
+package-lock.json

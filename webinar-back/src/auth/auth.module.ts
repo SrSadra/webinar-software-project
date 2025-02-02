@@ -16,9 +16,6 @@ import { AuthService } from './auth.service';
   imports: [
     TypeOrmModule.forFeature([userEntity,ProfileEntity,ManagerEntity]),
     JwtModule.registerAsync({
-      // global: true,
-      // secret: process.env.JWT_SECRET,
-      // signOptions: { expiresIn: '60s' },
       imports : [ConfigModule],
       useFactory: (configSer : ConfigService) => ({
           secret: configSer.get("JWT_SECRET"),

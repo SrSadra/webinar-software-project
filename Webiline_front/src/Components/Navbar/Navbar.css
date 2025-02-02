@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/slick');
+
 .navbar {
     justify-content: space-between;
     padding: 0 40px;
@@ -6,7 +8,9 @@
 
 .navbar_heading {
     margin-right: 20px;
-    font-size: 32px;
+    width: 190px;
+    /* font-size: 32px;
+    font-family: "slick", sans-serif Bold; */
 }
 
 .navbar_form {
@@ -35,7 +39,7 @@
     font-weight: 500;
     border: none;
     border-radius: 5px;
-    background-color: #6457f9;
+    background-color: #00908e;
     color: #fff;
     cursor: pointer;
 }
@@ -85,7 +89,7 @@
     width: 20px;
     height: 20px;
     border-radius: 100%;
-    background-color: #6457f9;
+    background-color: #00908e;
     color: #fff;
     font-size: 15px;
     margin-left: 5px;

@@ -1,3 +1,4 @@
+import { Transform } from "class-transformer";
 import { IsEmail, isNotEmpty, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
 import { loginUserDto } from "./loginUser.dto";
 
@@ -18,6 +19,7 @@ export class registerUserDto extends loginUserDto{
 
     @IsOptional()
     @IsNumber()
+    @Transform(({ value }) => (value ? Number(value) : null))
     nationalCode?: number;
 
     @IsNotEmpty()

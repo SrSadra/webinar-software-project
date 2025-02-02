@@ -1,41 +1,39 @@
 .single_product {
+  display: flex;
+  flex-direction: column; /* Ensures episodes appear below */
   justify-content: center;
   padding: 32px 48px;
+  width: 100%;
 }
 
-.single_product_thumbnails {
+.webinar_content {
   display: flex;
-  flex-direction: column;
   flex-wrap: wrap;
-  gap: 14px;
-  padding: 8px;
-  margin: 16px;
-}
-
-.single_product_thumbnails img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  /* justify-content: space-evenly; */
 }
 
 .single_product_display {
   width: 600px;
-  height: 600px;
+  height: 500px;
   object-fit: cover;
   border-radius: 10px;
+  margin-right: 5px;
+}
+
+.single_product_details {
+  width: 40%;
+  padding: 1px;
+  margin-left: 5%;
 }
 
 .selected_image {
   transform: scale(1.12);
 }
 
-.single_product_details {
+/* .single_product_details {
   width: 35%;
   padding: 16px 24px;
-}
+} */
 
 .single_product_title {
   margin-bottom: 16px;
@@ -68,6 +66,18 @@
 .add_cart {
   width: fit-content;
   padding: 8px 18px;
+  color: rgb(115, 115, 115);
+}
+
+#add_to_cart{
+  background-color: #ddd;
+  color: black;
+  position:static;
+  height: 60px;
+  width: 220px;
+  margin-top: 20%;
+  font-size:xx-large;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 .webinar_full_message {
@@ -75,4 +85,106 @@
   font-size: 18px;
   font-weight: bold;
   margin-top: 10px;
+}
+
+
+.price_section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.single_product_price {
+  text-decoration: line-through;
+  font-size: 1rem;
+  color: gray;
+  margin-top: 20%;
+  
+}
+
+.discount_badge {
+  background: rgb(10, 194, 47);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 50px;
+  font-weight: bold;
+  margin-top: 16%;
+}
+
+.discounted_price {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #000000;
+  margin-top: 16%;
+  width: 100px;
+}
+
+.doctor_only {
+  background: red;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  font-weight: bold;
+  border-radius: 10px;
+  width: 75%;
+}
+
+/* --- Episodes Section Styles --- */
+.episodes_section {
+  background-color: rgb(164, 164, 164);
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.episodes_title {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.episodes_container {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto; /* Makes it scrollable horizontally */
+  padding-bottom: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff #ff0000;
+  white-space: nowrap;
+}
+
+.episodes_container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.episodes_container::-webkit-scrollbar-thumb {
+  background-color: white;
+  border-radius: 10px;
+}
+
+.episode_card {
+  background: white;
+  padding: 15px;
+  border-radius: 6px;
+  flex: 0 0 auto; /* Prevents shrinking, making episodes scrollable */
+  width: 250px;
+  text-align: center;
+}
+
+.episode_title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.episode_times {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.episode_time {
+  font-size: 14px;
+  color: gray;
 }

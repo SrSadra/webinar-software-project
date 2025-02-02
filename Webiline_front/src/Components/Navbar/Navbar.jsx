@@ -8,11 +8,12 @@ import userImage from "../../assets/users_imag.png";
 import memo from "../../assets/memo.png";
 import order from "../../assets/package.png";
 import lock from "../../assets/locked.png";
+import logo from "../../assets/logoo.png"
 import LinkWithIcon from "./LinkWithIcon";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import UserContext from "../../contexts/UserContext";
 import CartContext from "../../contexts/CartContext";
-import { getSuggestionsAPI } from "../../services/productServices";
+// import { getSuggestionsAPI } from "../../services/productServices";
 
 const Navbar = () => {
   const [search, setSearch] = useState("");
@@ -53,26 +54,26 @@ const Navbar = () => {
     }
   };
 
-  useEffect(() => {
-    const delaySuggestions = setTimeout(() => {
-      if (search.trim() !== "") {
-        getSuggestionsAPI(search)
-          .then((res) => setSuggestions(res.data))
-          .catch((err) => console.log(err));
-      } else {
-        setSuggestions([]);
-      }
-    }, 300);
+//   useEffect(() => {
+//     const delaySuggestions = setTimeout(() => {
+//       if (search.trim() !== "") {
+//         getSuggestionsAPI(search)
+//           .then((res) => setSuggestions(res.data))
+//           .catch((err) => console.log(err));
+//       } else {
+//         setSuggestions([]);
+//       }
+//     }, 300);
 
-    return () => clearTimeout(delaySuggestions);
-  }, [search]);
+//     return () => clearTimeout(delaySuggestions);
+//   }, [search]);
 
-  console.log(suggestions);
+  console.log("doroste?",user?.user);
 
   return (
     <nav className="align_center navbar">
-      <div className="align_center">
-        <h1 className="navbar_heading">Webiline</h1>
+      <div className="align_center" >
+        <a href="/" className="navbar_heading"><img  src={logo} className="navbar_heading"></img></a>
         <form className="align_center navbar_form" onSubmit={handleSubmit}>
           <input
             type="text"
@@ -113,7 +114,7 @@ const Navbar = () => {
         </form>
       </div>
       <div className="align_center navbar_links">
-        <LinkWithIcon title="Home" link="/" emoji={rocket} />
+        {/* <LinkWithIcon title="Home" link="/" emoji={rocket} /> */}
         <LinkWithIcon title="Products" link="/products" emoji={star} />
         {!user && (
           <>
@@ -121,27 +122,27 @@ const Navbar = () => {
             <LinkWithIcon title="SignUp" link="/signup" emoji={memo} />
           </>
         )}
-        {user && user.role === "manager" && (
+        {user && (user?.user.role != "user" && user?.user.role != "doctor") && (
           <>
             <LinkWithIcon
               title="Users"
               link="/users"
               emoji={userImage}
             ></LinkWithIcon>
-            <LinkWithIcon
+            {/* <LinkWithIcon
               title="Logout"
               link="/logout"
               emoji={lock}
-            ></LinkWithIcon>
+            ></LinkWithIcon> */}
           </>
         )}
         {user && user.role !== "manager" && (
           <>
             <LinkWithIcon title="My Orders" link="myorders" emoji={order} />
             <LinkWithIcon title="Logout" link="/logout" emoji={lock} />
-            <NavLink to="/cart" className="align_center">
+            {/* <NavLink to="/cart" className="align_center">
               Cart <p className="align_center cart_counts">{cart.length}</p>
-            </NavLink>
+            </NavLink> */}
           </>
         )}
       </div>

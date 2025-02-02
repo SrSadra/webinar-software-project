@@ -9,8 +9,8 @@ import { Body, Controller, Get, Param, Post, Put, Query, UseGuards } from '@nest
 import { ManagerService } from './manager.service';
 
 
-@Role(Roles.MANAGER)
-@UseGuards(jwtGuard,RolesGuard)
+// @Role(Roles.MANAGER)
+// @UseGuards(jwtGuard,RolesGuard)
 @Controller('manager')
 export class ManagerController {
     constructor(private readonly managerSer: ManagerService){}
@@ -37,7 +37,20 @@ export class ManagerController {
     @Get('webinar-reports')
     async getWebinarReports(@Query() filterDto: FilterWebinarDto) {
         return this.managerSer.getWebinarReports(filterDto);
-  }
+    }
+
+    @Get("users")
+    async getUsers(@Body("username") username? :string){
+        return await this.managerSer.getUsers(username);
+    }
+
+    @Put("edit-users/:username")
+    async editUser(@Param("username") username: string , @Body() email: {email: string}){
+        console.log(email);
+        return this.managerSer.updateUserEmail(email.email, username);
+    }
+
+
 
     // @Put("deactive-category")
     // async deactiveCategory(@Body() title : string){
